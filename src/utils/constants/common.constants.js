@@ -22,6 +22,11 @@ const TASK_FETCH_TYPE = {
   myTasks: "myTasks",
 };
 
+const TASK_ACTION_TYPE = {
+  accept: "accept",
+  decline: "decline",
+};
+
 // const USER_ROLES = {
 //   admin: 1,
 //   hr: 2,
@@ -123,6 +128,7 @@ module.exports = {
   PRIORITIES,
   TASK_STATUS_TYPE,
   TASK_FETCH_TYPE,
+  TASK_ACTION_TYPE,
   // USER_DEPARTMENTS,
   // LOG_TYPES,
   // DURATION_TYPES,

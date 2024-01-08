@@ -1,55 +1,36 @@
-const Notification = require("../model/Notification.model");
-const { body } = require("express-validator");
-const PayloadValidatorMiddleware = require("../middleware/PayloadValidator.middleware");
+const admin = require("firebase-admin");
+const UserModel = require("../model/User.model");
 const apiResponseHelper = require("../utils/apiResponse.helper");
-const Users = require("../model/User.model")
-const { NOTIFICATION_TYPE } = require("../utils/constants/common.constants")
+const dotenv = require("dotenv");
+dotenv.config();
 
+const serviceAccount = JSON.parse(
+  process.env.FIREBASE_SERVICE_ACCOUNT_CREDENTIAL
+);
 
-const SendNotifcationService =
-    async (req, res) =>
-    {
-        try
-        {
-            const { senderId, senderName, recipients, notificationType, contentId, message } = req.leaveInfo;
-            let recipientIDs = [];
-            // if (notificationType == NOTIFICATION_TYPE.general)
-            // {
-            //     recipientIDs = await Users.find({}, { _id: 1 });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+});
 
-            // }
-            // else
-            // {
-            recipientIDs = notificationType == NOTIFICATION_TYPE.general ? [] : recipients;
-            // }
-            const createNotification = {};
-            createNotification["notificationType"] = notificationType,
-                createNotification["senderId"] = senderId,
-                createNotification["recipients"] = recipientIDs,
-                createNotification["message"] = message
-            createNotification["contentId"] = contentId
-            createNotification["senderName"] = senderName;
+const SendNotifcationService = async (notification, userId) => {
+  try {
+    // const user = await UserModel.findById(userId);
+    // const registrationToken = userId.fcm_token;
 
-
-            // Make sure all recipients exist in the database
-            if (notificationType != NOTIFICATION_TYPE.general)
-            {
-                const existingRecipients = await Users.find({ _id: { $in: recipientIDs } });
-                if (existingRecipients.length !== recipientIDs.length)
-                {
-                    return apiResponseHelper.notFoundResponse(res, msg = "one or more receiver is not found!")
-                }
-            }
-
-            // Create a new notification and save 
-
-            const notification = new Notification(createNotification);
-            await notification.save();
-
-        } catch (error) {
-            throw Error(error)
-            // return apiResponseHelper.errorResponse(res, (msg = "request is not sent!"));
-        }
+    const message = {
+      token:
+        "flEpfsFiRhW4GSqm0eSV98:APA91bHfWoneE-nmAf-fKYwuyBSxBI3thGGG9SjF9J6XANQ2OO5hQzlznb_CgkPIAKtZ1z7a6OtGBe94ZmGx_sSysjRDHM3byPW_fM2BJfrzLt15G5pSXWfwTAUaUqdg6po8cYFc1so0",
+      notification: {
+        title: "Login Successful",
+        body: "LFG",
+      },
     };
+
+    await admin.messaging().send(message);
+  } catch (error) {
+    return apiResponseHelper.errorResponse(res, "Server Error");
+    // return apiResponseHelper.errorResponse(res, (msg = "request is not sent!"));
+  }
+};
 
 module.exports = SendNotifcationService;

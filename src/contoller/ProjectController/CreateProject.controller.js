@@ -34,6 +34,7 @@ const CreateProjectController = [
     .escape(),
 
   body("due_date")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("project due date required!")
     .trim()

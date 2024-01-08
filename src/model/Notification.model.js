@@ -1,37 +1,32 @@
 const mongoose = require("mongoose");
 const { PROJECT_TYPES } = require("../utils/constants/common.constants");
 
-const Projectschema = mongoose.Schema(
+const Notificationschema = mongoose.Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    discription: {
+    body: {
       type: String,
+      require: true,
     },
     type: {
       type: String,
-      enum: PROJECT_TYPES,
+      enum: NOTIFCATION_TYPES,
       required: true,
     },
-    due_date: {
+    time: {
       type: Date,
+      required: true,
     },
-    head: {
+    user: {
       type: mongoose.Schema.ObjectId,
       ref: "users",
       required: true,
     },
-    members: [
-      {
-        type: mongoose.Schema.ObjectId,
-        ref: "users",
-        required: true,
-      },
-    ],
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Projects", Projectschema);
+module.exports = mongoose.model("Notifications", Notificationschema);

@@ -7,10 +7,17 @@ const { PRIORITIES } = require("../../utils/constants/common.constants");
 const ProjectModel = require("../../model/Project.model");
 const UploadFileService = require("../../services/UploadFile.service");
 const TaskModel = require("../../model/Task.model");
+const { query } = require("express");
 
-const CreateTaskController = [
+const UpdateTaskController = [
   UploadFileService.any("attachmentFiles"),
+  query("id")
+    .notEmpty({ ignore_whitespace: true })
+    .withMessage("task_id_required")
+    .trim()
+    .escape(),
   body("name")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("project_name_required")
     .trim()
@@ -43,6 +50,7 @@ const CreateTaskController = [
     .trim(),
 
   body("priority")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("task priority is required!")
     .bail()
@@ -56,16 +64,19 @@ const CreateTaskController = [
     .escape(),
 
   body("start_date")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("task start date required!")
     .trim()
     .escape(),
   body("due_date")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("task due date required!")
     .trim()
     .escape(),
   body("due_time")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("task due time required!")
     .trim()
@@ -101,6 +112,7 @@ const CreateTaskController = [
     .withMessage("invalid_assignor_id")
     .trim(),
   body("initial_assignees")
+    .optional()
     .custom(async (val) => {
       val.forEach(async (el) => {
         const user = await UserModel.findOne({
@@ -115,6 +127,7 @@ const CreateTaskController = [
     .withMessage("invalid_assignee_id")
     .trim(),
   body("repoter")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("repoter_id_required")
     .bail()
@@ -154,29 +167,12 @@ const CreateTaskController = [
 
   async (req, res, next) => {
     try {
-      const {
-        name,
-        discription,
-        project,
-        priority,
-        start_date,
-        due_date,
-        due_time,
-        assignor,
-        initial_assignees,
-        repoter,
-        parent_task,
-      } = req.body;
+      const upadateData = matchData(req.body);
 
-      const assingees_with_add_authority = initial_assignees;
-
-      if (!assignor) assignor = mongoose.Types.ObjectId(req.user._id);
-
-      var attachments;
-      if (req.files) {
+      if (req.files.length) {
         const attachmentFiles = req.files;
 
-        attachments = attachmentFiles.map((attachment) => {
+        const attachments = attachmentFiles.map((attachment) => {
           return (
             req.protocol +
             "://" +
@@ -185,29 +181,19 @@ const CreateTaskController = [
             attachment.filename
           );
         });
+        upadateData.attachments = attachments;
       }
 
-      await TaskModel.create({
-        name,
-        discription,
-        project,
-        priority,
-        attachments,
-        start_date,
-        due_date,
-        due_time,
-        assignor,
-        initial_assignees,
-        assingees_with_add_authority,
-        repoter,
-        parent_task,
-      });
+      await TaskModel.findOneAndupdate({ _id: taskId }, upadateData);
 
-      return apiResponseHelper.successResponse(res, "task succeffuly created");
+      return apiResponseHelper.successResponse(
+        res,
+        "task data succeffuly updated"
+      );
     } catch (e) {
       return apiResponseHelper.errorResponse(res, e.message);
     }
   },
 ];
 
-module.exports = CreateTaskController;
+module.exports = UpdateTaskController;

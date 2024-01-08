@@ -4,76 +4,97 @@ const {
   TASK_STATUS_TYPE,
 } = require("../utils/constants/common.constants");
 
-const Taskschema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  discription: {
-    type: String,
-    required: true,
-  },
-  project: {
-    type: mongoose.Schema.ObjectId,
-    ref: "projects",
-    required: true,
-  },
-  priority: {
-    type: String,
-    enum: PRIORITIES,
-    required: true,
-  },
-  status: {
-    compeletion_percentage: {
-      type: Number,
-      max: 100,
-      default: 0,
-    },
-    status_type: {
+const Taskschema = mongoose.Schema(
+  {
+    name: {
       type: String,
-      enum: TASK_STATUS_TYPE,
-      default: TASK_STATUS_TYPE.inProgress,
+      required: true,
     },
-  },
-  start_date: {
-    type: Date,
-    required: true,
-  },
-  due_date: {
-    type: Date,
-    required: true,
-  },
-  due_time: {
-    type: Date,
-    required: true,
-  },
-  attachments: [
-    {
+    discription: {
       type: String,
+      required: true,
     },
-  ],
-  assignor: {
-    type: mongoose.Schema.ObjectId,
-    ref: "users",
-    required: true,
-  },
-  assignees: [
-    {
+    project: {
+      type: mongoose.Schema.ObjectId,
+      ref: "projects",
+      required: true,
+    },
+    priority: {
+      type: String,
+      enum: PRIORITIES,
+      required: true,
+    },
+    status: {
+      compeletion_percentage: {
+        type: Number,
+        max: 100,
+        default: 0,
+      },
+      status_type: {
+        type: String,
+        enum: TASK_STATUS_TYPE,
+        default: TASK_STATUS_TYPE.inProgress,
+      },
+    },
+    start_date: {
+      type: Date,
+      required: true,
+    },
+    due_date: {
+      type: Date,
+      required: true,
+    },
+    due_time: {
+      type: Date,
+      required: true,
+    },
+    attachments: [
+      {
+        type: String,
+      },
+    ],
+    assignor: {
       type: mongoose.Schema.ObjectId,
       ref: "users",
       required: true,
     },
-  ],
-  repoter: {
-    type: mongoose.Schema.ObjectId,
-    ref: "users",
-    required: true,
+    initial_assignees: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "users",
+        required: true,
+      },
+    ],
+    assignees_working: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "users",
+      },
+    ],
+    assignees_not_working: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "users",
+      },
+    ],
+    assingees_with_add_authority: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "users",
+      },
+    ],
+    repoter: {
+      type: mongoose.Schema.ObjectId,
+      ref: "users",
+      required: true,
+    },
+    parent_task: {
+      type: mongoose.Schema.ObjectId,
+      ref: "tasks",
+      default: null,
+    },
   },
-  parent_task: {
-    type: mongoose.Schema.ObjectId,
-    ref: "tasks",
-    default: null,
-  },
-});
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("Tasks", Taskschema);

@@ -4,7 +4,7 @@ const ProjectModel = require("../../model/Project.model");
 const ResponseGenratorService = require("../../services/ResponseGenrator.service");
 const mongoose = require("mongoose");
 
-const FetchProjectsController = [
+const FetchProjectsWithTasksController = [
   async (req, res) => {
     try {
       const user_id = mongoose.Types.ObjectId(req.user._id);
@@ -26,10 +26,19 @@ const FetchProjectsController = [
       });
 
       afterQuery.push({
+        $lookup: {
+          from: "tasks",
+          localField: "_id",
+          foreignField: "project",
+          as: "tasks",
+        },
+      });
+      afterQuery.push({
         $project: {
           name: 1,
           due_date: 1,
           head: 1,
+          tasks: 1,
         },
       });
 
@@ -50,4 +59,4 @@ const FetchProjectsController = [
   },
 ];
 
-module.exports = FetchProjectsController;
+module.exports = FetchProjectsWithTasksController;

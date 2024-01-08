@@ -58,6 +58,9 @@ const Userschema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    fcm_token: {
+      type: String,
+    },
     refresh_token: String,
     access_token: String,
   },

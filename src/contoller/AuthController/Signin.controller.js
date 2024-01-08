@@ -8,6 +8,7 @@ const UserModel = require("../../model/User.model");
 const { default: mongoose } = require("mongoose");
 const { generateValidationError } = require("../../utils/common.helper");
 const { comparePass } = require("../../utils/passEncDec.helper");
+const SendNotifcationService = require("../../services/SendNotification.service");
 
 const SignInController = [
   body("email")
@@ -25,11 +26,17 @@ const SignInController = [
     .trim()
     .escape(),
 
+  // body("fcm_token")
+  //   .notEmpty({ ignore_whitespace: true })
+  //   .withMessage("fcm_token_required")
+  //   .trim()
+  //   .escape(),
+
   PayloadValidatorMiddleware,
 
   async (req, res, next) => {
     try {
-      const { email, password } = req.body;
+      const { email, password, fcm_token } = req.body;
       const user = await Users.findOne({
         email: email.toLowerCase(),
       });
@@ -79,7 +86,7 @@ const SignInController = [
 
         await UserModel.updateOne(
           { _id: mongoose.Types.ObjectId(userData._id) },
-          { access_token, refresh_token }
+          { access_token, refresh_token, fcm_token }
         );
 
         return apiResponseHelper.successResponseWithData(
