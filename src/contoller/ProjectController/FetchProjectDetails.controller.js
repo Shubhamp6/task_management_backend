@@ -16,7 +16,7 @@ const FetchProjectDetailsController = [
       const userId = mongoose.Types.ObjectId(req.user._id);
       const project = await ProjectModel.find({
         _id: mongoose.Types.ObjectId(req.query.id),
-        $or: [{ members: userId }, { head: userId }],
+        $or: [{ "members.id": userId }, { "head.id": userId }],
       });
       return apiResponseHelper.successResponseWithData(
         res,

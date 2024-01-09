@@ -19,15 +19,35 @@ const Projectschema = mongoose.Schema(
       type: Date,
     },
     head: {
-      type: mongoose.Schema.ObjectId,
-      ref: "users",
-      required: true,
-    },
-    members: [
-      {
+      id: {
         type: mongoose.Schema.ObjectId,
         ref: "users",
         required: true,
+      },
+      first_name: {
+        type: String,
+        required: true,
+      },
+      last_name: {
+        type: String,
+        required: true,
+      },
+    },
+    members: [
+      {
+        id: {
+          type: mongoose.Schema.ObjectId,
+          ref: "users",
+          required: true,
+        },
+        first_name: {
+          type: String,
+          required: true,
+        },
+        last_name: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },

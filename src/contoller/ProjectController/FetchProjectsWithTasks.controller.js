@@ -7,13 +7,13 @@ const mongoose = require("mongoose");
 const FetchProjectsWithTasksController = [
   async (req, res) => {
     try {
-      const user_id = mongoose.Types.ObjectId(req.user._id);
+      const userId = mongoose.Types.ObjectId(req.user._id);
 
       const model = ProjectModel,
         query = [],
         afterQuery = [];
       const condition = {
-        $or: [{ head: user_id }, { members: user_id }],
+        $or: [{ members: { id: userId } }, { head: { id: userId } }],
       };
 
       const filterCondition = await new ResponseGenratorService(

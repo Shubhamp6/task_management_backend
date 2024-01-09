@@ -1,4 +1,4 @@
-const { body } = require("express-validator");
+const { body, check } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.middleware");
 const apiResponseHelper = require("../../utils/apiResponse.helper");
 const UserModel = require("../../model/User.model");
@@ -28,7 +28,7 @@ const CreateProjectController = [
       if (!Object.values(PROJECT_TYPES).includes(val)) {
         throw Error("bad_project_type_selcetion");
       }
-      return true;
+      return val;
     })
     .trim()
     .escape(),
@@ -40,35 +40,41 @@ const CreateProjectController = [
     .trim()
     .escape(),
 
-  body("head")
-    .optional()
+  body("head.id")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("project_head_required")
     .bail()
-    .custom(async (val) => {
+    .custom(async (val, { req }) => {
+      console.log(val);
       if (val) {
         const user = await UserModel.findOne({
           _id: mongoose.Types.ObjectId(val),
         });
-        if (!user) {
-          throw Error("user not valid");
+        console.log(1);
+        if (
+          !user ||
+          user.first_name != req.body.head.first_name ||
+          user.last_name != req.body.head.last_name
+        ) {
+          throw Error("head not valid");
         }
       }
       return val;
     })
     .withMessage("invalid_head_id")
-    .trim(),
+    .trim()
+    .escape(),
 
-  body("members")
-    .custom(async (val) => {
-      val.map((el) => {
-        const user =  UserModel.findOne({
-          _id: mongoose.Types.ObjectId(el),
+  check("members.*.id")
+    .custom(async (val, { req }) => {
+      if (val) {
+        const user = await UserModel.findOne({
+          _id: mongoose.Types.ObjectId(val),
         });
         if (!user) {
-          throw Error("member not valid");
+          throw Error("members not valid");
         }
-      });
+      }
       return val;
     })
     .withMessage("invalid_member_id")
@@ -79,8 +85,13 @@ const CreateProjectController = [
   async (req, res, next) => {
     try {
       const projectDetails = req.body;
+      console.log(projectDetails);
       if (!projectDetails.head)
-        projectDetails.head = mongoose.Types.ObjectId(req.user._id);
+        projectDetails.head = {
+          id: mongoose.Types.ObjectId(req.user._id),
+          first_name: req.user.first_name,
+          last_name: req.user.last_name,
+        };
       await ProjectModel.create(projectDetails);
 
       return apiResponseHelper.successResponse(
