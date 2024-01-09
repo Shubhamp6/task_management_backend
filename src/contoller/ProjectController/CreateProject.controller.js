@@ -45,12 +45,10 @@ const CreateProjectController = [
     .withMessage("project_head_required")
     .bail()
     .custom(async (val, { req }) => {
-      console.log(val);
       if (val) {
         const user = await UserModel.findOne({
           _id: mongoose.Types.ObjectId(val),
         });
-        console.log(1);
         if (
           !user ||
           user.first_name != req.body.head.first_name ||

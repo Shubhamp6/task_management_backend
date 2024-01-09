@@ -54,39 +54,102 @@ const Taskschema = mongoose.Schema(
       },
     ],
     assignor: {
-      type: mongoose.Schema.ObjectId,
-      ref: "users",
-      required: true,
-    },
-    initial_assignees: [
-      {
+      id: {
         type: mongoose.Schema.ObjectId,
         ref: "users",
         required: true,
       },
+      first_name: {
+        type: String,
+        required: true,
+      },
+      last_name: {
+        type: String,
+        required: true,
+      },
+    },
+    initial_assignees: [
+      {
+        id: {
+          type: mongoose.Schema.ObjectId,
+          ref: "users",
+          required: true,
+        },
+        first_name: {
+          type: String,
+          required: true,
+        },
+        last_name: {
+          type: String,
+          required: true,
+        },
+      },
     ],
     assignees_working: [
       {
-        type: mongoose.Schema.ObjectId,
-        ref: "users",
+        id: {
+          type: mongoose.Schema.ObjectId,
+          ref: "users",
+          required: true,
+        },
+        first_name: {
+          type: String,
+          required: true,
+        },
+        last_name: {
+          type: String,
+          required: true,
+        },
       },
     ],
     assignees_not_working: [
       {
-        type: mongoose.Schema.ObjectId,
-        ref: "users",
+        id: {
+          type: mongoose.Schema.ObjectId,
+          ref: "users",
+          required: true,
+        },
+        first_name: {
+          type: String,
+          required: true,
+        },
+        last_name: {
+          type: String,
+          required: true,
+        },
       },
     ],
     assingees_with_add_authority: [
       {
-        type: mongoose.Schema.ObjectId,
-        ref: "users",
+        id: {
+          type: mongoose.Schema.ObjectId,
+          ref: "users",
+          required: true,
+        },
+        first_name: {
+          type: String,
+          required: true,
+        },
+        last_name: {
+          type: String,
+          required: true,
+        },
       },
     ],
     repoter: {
-      type: mongoose.Schema.ObjectId,
-      ref: "users",
-      required: true,
+      id: {
+        type: mongoose.Schema.ObjectId,
+        ref: "users",
+        required: true,
+      },
+      first_name: {
+        type: String,
+        required: true,
+      },
+      last_name: {
+        type: String,
+        required: true,
+      },
     },
     parent_task: {
       type: mongoose.Schema.ObjectId,

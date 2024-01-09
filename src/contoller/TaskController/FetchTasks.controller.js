@@ -23,13 +23,13 @@ const FetchTasksController = [
       if (taskFetchType == TASK_FETCH_TYPE.myTasks) {
         condition = {
           $or: [
-            { assignees_working: user_id },
-            { assignees_not_working: user_id },
-            { repoter: user_id },
+            { "assignees_working.id": user_id },
+            { "assignees_not_working.id": user_id },
+            { "repoter.id": user_id },
           ],
         };
       } else {
-        condition = { assignor: user_id };
+        condition = { "assignor.id": user_id };
       }
       const filterCondition = await new ResponseGenratorService(
         req,

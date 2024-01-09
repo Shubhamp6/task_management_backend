@@ -98,46 +98,53 @@ const UpdateTaskController = [
     .notEmpty({ ignore_whitespace: true })
     .withMessage("assignor_id_required")
     .bail()
-    .custom(async (val) => {
+    .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({
           _id: mongoose.Types.ObjectId(val),
         });
-        if (!user) {
-          throw Error("user not valid");
+        console.log(1);
+        if (
+          !user ||
+          user.first_name != req.body.assignor.first_name ||
+          user.last_name != req.body.assignor.last_name
+        ) {
+          throw Error("assignor not valid");
         }
       }
       return val;
     })
     .withMessage("invalid_assignor_id")
     .trim(),
-  body("initial_assignees")
-    .optional()
-    .custom(async (val) => {
-      val.forEach(async (el) => {
-        const user = await UserModel.findOne({
-          _id: mongoose.Types.ObjectId(el),
-        });
-        if (!user) {
-          throw Error("assignee not valid");
-        }
-      });
-      return val;
-    })
-    .withMessage("invalid_assignee_id")
-    .trim(),
-  body("repoter")
-    .optional()
-    .notEmpty({ ignore_whitespace: true })
-    .withMessage("repoter_id_required")
-    .bail()
-    .custom(async (val) => {
+  body("initial_assignees.*.id")
+    .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({
           _id: mongoose.Types.ObjectId(val),
         });
         if (!user) {
-          throw Error("user not valid");
+          throw Error("initial assignees not valid");
+        }
+      }
+      return val;
+    })
+    .withMessage("invalid_assignee_id")
+    .trim(),
+  body("repoter.id")
+    .notEmpty({ ignore_whitespace: true })
+    .withMessage("repoter_id_required")
+    .bail()
+    .custom(async (val, { req }) => {
+      if (val) {
+        const user = await UserModel.findOne({
+          _id: mongoose.Types.ObjectId(val),
+        });
+        if (
+          !user ||
+          user.first_name != req.body.repoter.first_name ||
+          user.last_name != req.body.repoter.last_name
+        ) {
+          throw Error("repoter not valid");
         }
       }
       return val;

@@ -10,16 +10,16 @@ const AcceptOrDeclineTaskController = [
   body("id")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("task_id_required"),
-  body("secondary_assignees")
-    .custom(async (val) => {
-      val.forEach(async (el) => {
+  body("secondary_assignees.*.id")
+    .custom(async (val, { req }) => {
+      if (val) {
         const user = await UserModel.findOne({
-          _id: mongoose.Types.ObjectId(el),
+          _id: mongoose.Types.ObjectId(val),
         });
         if (!user) {
-          throw Error("assignee not valid");
+          throw Error("assignees not valid");
         }
-      });
+      }
       return val;
     })
     .withMessage("invalid_assignee_id")
@@ -35,7 +35,7 @@ const AcceptOrDeclineTaskController = [
       await TaskModel.findOneAndUpdate(
         {
           _id: taskId,
-          assingees_with_add_authority: userId,
+          "assingees_with_add_authority.id": userId,
         },
         { $push: { intial_assingees: { $each: secondary_assignees } } }
       );

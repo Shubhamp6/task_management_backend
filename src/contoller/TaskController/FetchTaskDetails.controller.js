@@ -16,11 +16,11 @@ const FetchTaskDetailsController = [
       const task = await TaskModel.find({
         _id: mongoose.Types.ObjectId(req.query.id),
         $or: [
-          { initial_assignees: userId },
-          { assignor: userId },
-          { assignees_working: userId },
-          { assignees_not_working: userId },
-          { repoter: userId },
+          { 'initial_assignees.id': userId },
+          { 'assignor.id' : userId },
+          { 'assignees_working.id': userId },
+          { 'assignees_not_working.id': userId },
+          { 'repoter.id': userId },
         ],
       });
       return apiResponseHelper.successResponseWithData(

@@ -25,16 +25,32 @@ const AcceptOrDeclineTaskController = [
         await TaskModel.findOneAndUpdate(
           { _id: taskId, initial_assignees: userId },
           {
-            $pull: { initial_assignees: userId },
-            $push: { assignees_working: userId },
+            $pull: {
+              initial_assignees: {
+                id: userId,
+              },
+            },
+            $push: {
+              assignees_working: {
+                id: userId,
+                first_name: req.user.first_name,
+                last_name: req.user.last_name,
+              },
+            },
           }
         );
       } else {
         await TaskModel.findOneAndUpdate(
           { _id: taskId, initial_assignees: userId },
           {
-            $pull: { initial_assingees: userId },
-            $push: { assignees_not_working: userId },
+            $pull: { initial_assingees: { id: userId } },
+            $push: {
+              assignees_not_working: {
+                id: userId,
+                first_name: req.user.first_name,
+                last_name: req.user.last_name,
+              },
+            },
           }
         );
       }

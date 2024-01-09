@@ -82,55 +82,68 @@ const CreateTaskController = [
     })
     .withMessage("Attachments required"),
 
-  body("assignor")
+  body("assignor.id")
     .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("assignor_id_required")
     .bail()
-    .custom(async (val) => {
+    .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({
           _id: mongoose.Types.ObjectId(val),
         });
-        if (!user) {
-          throw Error("user not valid");
+        console.log(req.body);
+        if (
+          !user ||
+          user.first_name != req.body.assignor.first_name ||
+          user.last_name != req.body.assignor.last_name
+        ) {
+          throw Error("assignor not valid");
         }
       }
       return val;
     })
     .withMessage("invalid_assignor_id")
-    .trim(),
-  body("initial_assignees")
-    .custom(async (val) => {
-      val.forEach(async (el) => {
-        const user = await UserModel.findOne({
-          _id: mongoose.Types.ObjectId(el),
-        });
-        if (!user) {
-          throw Error("assignee not valid");
-        }
-      });
-      return val;
-    })
-    .withMessage("invalid_assignee_id")
-    .trim(),
-  body("repoter")
-    .notEmpty({ ignore_whitespace: true })
-    .withMessage("repoter_id_required")
-    .bail()
-    .custom(async (val) => {
+    .trim()
+    .escape(),
+  body("initial_assignees.*.id")
+    .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({
           _id: mongoose.Types.ObjectId(val),
         });
         if (!user) {
-          throw Error("user not valid");
+          throw Error("initial assignees not valid");
+        }
+      }
+      return val;
+    })
+    .withMessage("invalid_assignee_id")
+    .trim()
+    .escape(),
+  body("repoter.id")
+    .notEmpty({ ignore_whitespace: true })
+    .withMessage("repoter_id_required")
+    .bail()
+    .custom(async (val, { req }) => {
+      if (val) {
+        const user = await UserModel.findOne({
+          _id: mongoose.Types.ObjectId(val),
+        });
+        if (
+          !user ||
+          user.first_name != req.body.repoter.first_name ||
+          user.last_name != req.body.repoter.last_name
+        ) {
+          throw Error("repoter not valid");
         }
       }
       return val;
     })
     .withMessage("invalid_repoter_id")
-    .trim(),
+    .trim()
+    .escape(),
+
   body("parent_task")
     .optional()
     .notEmpty({ ignore_whitespace: true })
@@ -170,7 +183,12 @@ const CreateTaskController = [
 
       const assingees_with_add_authority = initial_assignees;
 
-      if (!assignor) assignor = mongoose.Types.ObjectId(req.user._id);
+      if (!assignor)
+        assignor = mongoose.Types.ObjectId({
+          id: mongoose.Types.ObjectId(req.user._id),
+          first_name: req.user.first_name,
+          last_name: req.user.last_name,
+        });
 
       var attachments;
       if (req.files) {
