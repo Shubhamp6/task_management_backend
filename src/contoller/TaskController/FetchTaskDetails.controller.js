@@ -12,9 +12,17 @@ const FetchTaskDetailsController = [
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
-      const task = await TaskModel.findOneById(
-        mongoose.Types.ObjectId(req.query.id)
-      );
+      const userId = mongoose.Types.ObjectId(req.user._id);
+      const task = await TaskModel.find({
+        _id: mongoose.Types.ObjectId(req.query.id),
+        $or: [
+          { initial_assignees: userId },
+          { assignor: userId },
+          { assignees_working: userId },
+          { assignees_not_working: userId },
+          { repoter: userId },
+        ],
+      });
       return apiResponseHelper.successResponseWithData(
         res,
         "task details fetched",

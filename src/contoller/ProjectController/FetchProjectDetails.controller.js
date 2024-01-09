@@ -13,7 +13,11 @@ const FetchProjectDetailsController = [
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
-      const project = await ProjectModel.findById(mongoose.Types.ObjectId(req.query.id));
+      const userId = mongoose.Types.ObjectId(req.user._id);
+      const project = await ProjectModel.find({
+        _id: mongoose.Types.ObjectId(req.query.id),
+        $or: [{ members: userId }, { head: userId }],
+      });
       return apiResponseHelper.successResponseWithData(
         res,
         "project details fetched",

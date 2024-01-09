@@ -45,7 +45,6 @@ class ResponseGenratorService {
 
   getSearchConditions(condition) {
     const searchCondition = {};
-
     if (this.search) {
       if (
         this.searchable &&
@@ -64,7 +63,6 @@ class ResponseGenratorService {
         };
       }
     }
-
     return {
       ...condition,
       ...searchCondition,
