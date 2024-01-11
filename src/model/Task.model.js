@@ -30,7 +30,7 @@ const Taskschema = mongoose.Schema(
         max: 100,
         default: 0,
       },
-      status_type: {
+      type: {
         type: String,
         enum: TASK_STATUS_TYPE,
         default: TASK_STATUS_TYPE.inProgress,
@@ -156,6 +156,18 @@ const Taskschema = mongoose.Schema(
       ref: "tasks",
       default: null,
     },
+    status_update_history: [
+      {
+        description: {
+          type: String,
+          required: true,
+        },
+        time: {
+          type: Date,
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const { body } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.middleware");
 const TaskModel = require("../../model/Task.model");
-const { TASK_ACTION_TYPE } = require("../../utils/constants/common.constants");
+const { TASK_ACTION_TYPE, NOTIFICATION_TYPE, NOTIFICATION_TITLE } = require("../../utils/constants/common.constants");
 
 const AcceptOrDeclineTaskController = [
   body("id")
@@ -32,12 +32,34 @@ const AcceptOrDeclineTaskController = [
         taskId = mongoose.Types.ObjectId(req.body.id),
         userId = mongoose.Types.ObjectId(req.user._id);
 
-      await TaskModel.findOneAndUpdate(
+      const task = await TaskModel.findOneAndUpdate(
         {
           _id: taskId,
           "assingees_with_add_authority.id": userId,
         },
         { $push: { intial_assingees: { $each: secondary_assignees } } }
+      );
+
+      const sendTo = secondary_assignees.map((assignee) => {
+        return assignee.id;
+      });
+
+      // Adding notification of task created in notification model
+      await NotificationModel.create({
+        title: NOTIFICATION_TITLE.taskAssignedSecondary,
+        body: `${task.name} is assinged to you by ${req.user.first_name} ${req.user.last_name}`,
+        task: task._id,
+        type: NOTIFICATION_TYPE.taskAssignedSecondary,
+        sentTo: sendTo,
+      });
+
+      //Sending notification to all concern persons
+      await SendNotifcationService(
+        {
+          title: NOTIFICATION_TITLE.taskAssignedSecondary,
+          body: `${task.name} is assinged to you by ${req.user.first_name} ${req.user.last_name}`,
+        },
+        sendTo
       );
       return apiResponseHelper.successResponse(res, "new assignees added");
     } catch (e) {

@@ -1,5 +1,8 @@
 const mongoose = require("mongoose");
-const { PROJECT_TYPES } = require("../utils/constants/common.constants");
+const {
+  PROJECT_TYPES,
+  NOTIFICATION_TYPE,
+} = require("../utils/constants/common.constants");
 
 const Notificationschema = mongoose.Schema(
   {
@@ -11,20 +14,23 @@ const Notificationschema = mongoose.Schema(
       type: String,
       require: true,
     },
+    task: {
+      type: String,
+      ref: "tasks",
+      required: true,
+    },
     type: {
       type: String,
-      enum: NOTIFCATION_TYPES,
+      enum: NOTIFICATION_TYPE,
       required: true,
     },
-    time: {
-      type: Date,
-      required: true,
-    },
-    user: {
-      type: mongoose.Schema.ObjectId,
-      ref: "users",
-      required: true,
-    },
+    sentTo: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: "users",
+        required: true,
+      },
+    ],
   },
   { timestamps: true }
 );

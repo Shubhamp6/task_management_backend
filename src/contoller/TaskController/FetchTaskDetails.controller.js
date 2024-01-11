@@ -8,7 +8,21 @@ const TaskModel = require("../../model/Task.model");
 const FetchTaskDetailsController = [
   query("id")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("task_id_required"),
+    .withMessage("task_id_required")
+    .custom(async (val, { req }) => {
+      if (val) {
+        const task = await TaskModel.findOne({
+          _id: mongoose.Types.ObjectId(val),
+        });
+        if (!task) {
+          throw Error("task not valid");
+        }
+      }
+      return val;
+    })
+    .withMessage("invalid_task_id")
+    .trim(),
+  ,
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
@@ -16,11 +30,11 @@ const FetchTaskDetailsController = [
       const task = await TaskModel.find({
         _id: mongoose.Types.ObjectId(req.query.id),
         $or: [
-          { 'initial_assignees.id': userId },
-          { 'assignor.id' : userId },
-          { 'assignees_working.id': userId },
-          { 'assignees_not_working.id': userId },
-          { 'repoter.id': userId },
+          { "initial_assignees.id": userId },
+          { "assignor.id": userId },
+          { "assignees_working.id": userId },
+          { "assignees_not_working.id": userId },
+          { "repoter.id": userId },
         ],
       });
       return apiResponseHelper.successResponseWithData(

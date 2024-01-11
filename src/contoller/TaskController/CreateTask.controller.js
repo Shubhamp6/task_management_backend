@@ -3,10 +3,16 @@ const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.mi
 const apiResponseHelper = require("../../utils/apiResponse.helper");
 const UserModel = require("../../model/User.model");
 const { default: mongoose } = require("mongoose");
-const { PRIORITIES } = require("../../utils/constants/common.constants");
+const {
+  PRIORITIES,
+  NOTIFICATION_TITLE,
+  NOTIFICATION_TYPE,
+} = require("../../utils/constants/common.constants");
 const ProjectModel = require("../../model/Project.model");
 const UploadFileService = require("../../services/UploadFile.service");
 const TaskModel = require("../../model/Task.model");
+const NotificationModel = require("../../model/Notification.model");
+const SendNotifcationService = require("../../services/SendNotification.service");
 
 const CreateTaskController = [
   UploadFileService.any("attachmentFiles"),
@@ -183,6 +189,7 @@ const CreateTaskController = [
 
       const assingees_with_add_authority = initial_assignees;
 
+      // If assignor is not specified make creator of task assignor
       if (!assignor)
         assignor = mongoose.Types.ObjectId({
           id: mongoose.Types.ObjectId(req.user._id),
@@ -190,6 +197,7 @@ const CreateTaskController = [
           last_name: req.user.last_name,
         });
 
+      // Adding attachments if any
       var attachments;
       if (req.files) {
         const attachmentFiles = req.files;
@@ -205,7 +213,8 @@ const CreateTaskController = [
         });
       }
 
-      await TaskModel.create({
+      // Create new task
+      const task = await TaskModel.create({
         name,
         discription,
         project,
@@ -220,6 +229,29 @@ const CreateTaskController = [
         repoter,
         parent_task,
       });
+
+      initial_assignees.push(repoter);
+
+      const sendTo = initial_assignees.map((assignee) => {
+        return assignee.id;
+      });
+      // Adding notification of task created in notification model
+      await NotificationModel.create({
+        title: NOTIFICATION_TITLE.taskAssignedPrimary,
+        body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
+        task: task._id,
+        type: NOTIFICATION_TYPE.taskAssignedPrimary,
+        sentTo: sendTo,
+      });
+
+      //Sending notification to all concern persons
+      await SendNotifcationService(
+        {
+          title: NOTIFICATION_TITLE.taskAssignedPrimary,
+          body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
+        },
+        sendTo
+      );
 
       return apiResponseHelper.successResponse(res, "task succeffuly created");
     } catch (e) {

@@ -27,6 +27,24 @@ const TASK_ACTION_TYPE = {
   decline: "decline",
 };
 
+const NOTIFICATION_TYPE = {
+  taskAssignedPrimary: "taskAssignedPrimary",
+  taskAssignedSecondary: "taskAssignedSecondary",
+  taskAccepted: "taskAccepted",
+  taskDeclined: "taskDecline",
+  taskStatusChanged: "taskStatusChanged",
+  reminder: "reminder",
+};
+
+const NOTIFICATION_TITLE = {
+  taskAssignedPrimary: "New Task Assigned",
+  taskAssignedSecondary: "New Task Assigned",
+  taskAccepted: "Task is Accepted",
+  taskDeclined: "Task is Declined",
+  taskStatusChanged: "Task Status is Changed",
+  reminder: "Task Deadline Reminder",
+};
+
 // const USER_ROLES = {
 //   admin: 1,
 //   hr: 2,
@@ -129,6 +147,8 @@ module.exports = {
   TASK_STATUS_TYPE,
   TASK_FETCH_TYPE,
   TASK_ACTION_TYPE,
+  NOTIFICATION_TYPE,
+  NOTIFICATION_TITLE,
   // USER_DEPARTMENTS,
   // LOG_TYPES,
   // DURATION_TYPES,

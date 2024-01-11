@@ -7,11 +7,11 @@ const checkAssingeesAddAuthority = () => {
     const userId = mongoose.Types.ObjectId(req.user._id),
       taskId = mongoose.Types.ObjectId(req.body.id);
 
-    const user = await TaskModel.findOne({
+    const task = await TaskModel.findOne({
       _id: taskId,
-      assignor: userId,
+      'assignor.id': userId,
     });
-    if (!user)
+    if (!task)
       return apiResponseHelper.unauthorizedResponse(
         res,
         "You are not owner of this task"

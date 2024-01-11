@@ -9,7 +9,20 @@ const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.mi
 const FetchProjectDetailsController = [
   query("id")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project_id_required"),
+    .withMessage("project_id_required")
+    .custom(async (val, { req }) => {
+      if (val) {
+        const project = await ProjectModel.findOne({
+          _id: mongoose.Types.ObjectId(val),
+        });
+        if (!project) {
+          throw Error("project not valid");
+        }
+      }
+      return val;
+    })
+    .withMessage("invalid_project_id")
+    .trim(),
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {

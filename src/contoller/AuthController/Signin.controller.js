@@ -26,11 +26,11 @@ const SignInController = [
     .trim()
     .escape(),
 
-  // body("fcm_token")
-  //   .notEmpty({ ignore_whitespace: true })
-  //   .withMessage("fcm_token_required")
-  //   .trim()
-  //   .escape(),
+  body("fcm_token")
+    .notEmpty({ ignore_whitespace: true })
+    .withMessage("fcm_token_required")
+    .trim()
+    .escape(),
 
   PayloadValidatorMiddleware,
 

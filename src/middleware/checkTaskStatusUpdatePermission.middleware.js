@@ -2,18 +2,15 @@ const { default: mongoose } = require("mongoose");
 const apiResponseHelper = require("../utils/apiResponse.helper.js");
 const TaskModel = require("../model/Task.model.js");
 
-const checkAssingeesAddAuthority = () => {
+const checkTaskStatusUpdatePermission = () => {
   async (req, res, next) => {
     const userId = mongoose.Types.ObjectId(req.user._id),
       taskId = mongoose.Types.ObjectId(req.body.id);
 
-    const task = await TaskModel.findOneAndUpdate(
-      {
-        _id: taskId,
-        "assingees_with_add_authority,id": userId,
-      },
-      { $pull: { assingees_with_add_authority: { id: userId } } }
-    );
+    const task = await TaskModel.findOneAndUpdate({
+      _id: taskId,
+      "assingees_working,id": userId,
+    });
     if (!task)
       return apiResponseHelper.unauthorizedResponse(
         res,
@@ -22,4 +19,4 @@ const checkAssingeesAddAuthority = () => {
     next();
   };
 };
-module.exports = checkAssingeesAddAuthority;
+module.exports = checkTaskStatusUpdatePermission;
