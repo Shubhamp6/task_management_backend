@@ -32,6 +32,10 @@ const Projectschema = mongoose.Schema(
         type: String,
         required: true,
       },
+      employee_code: {
+        type: String,
+        required: true,
+      },
     },
     members: [
       {
@@ -45,6 +49,10 @@ const Projectschema = mongoose.Schema(
           required: true,
         },
         last_name: {
+          type: String,
+          required: true,
+        },
+        employee_code: {
           type: String,
           required: true,
         },

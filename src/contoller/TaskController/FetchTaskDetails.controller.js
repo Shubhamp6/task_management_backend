@@ -22,7 +22,6 @@ const FetchTaskDetailsController = [
     })
     .withMessage("invalid_task_id")
     .trim(),
-  ,
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {

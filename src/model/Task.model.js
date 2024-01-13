@@ -67,6 +67,10 @@ const Taskschema = mongoose.Schema(
         type: String,
         required: true,
       },
+      employee_code: {
+        type: String,
+        required: true,
+      },
     },
     initial_assignees: [
       {
@@ -80,6 +84,10 @@ const Taskschema = mongoose.Schema(
           required: true,
         },
         last_name: {
+          type: String,
+          required: true,
+        },
+        employee_code: {
           type: String,
           required: true,
         },
@@ -100,6 +108,10 @@ const Taskschema = mongoose.Schema(
           type: String,
           required: true,
         },
+        employee_code: {
+          type: String,
+          required: true,
+        },
       },
     ],
     assignees_not_working: [
@@ -114,6 +126,10 @@ const Taskschema = mongoose.Schema(
           required: true,
         },
         last_name: {
+          type: String,
+          required: true,
+        },
+        employee_code: {
           type: String,
           required: true,
         },
@@ -134,6 +150,10 @@ const Taskschema = mongoose.Schema(
           type: String,
           required: true,
         },
+        employee_code: {
+          type: String,
+          required: true,
+        },
       },
     ],
     repoter: {
@@ -147,6 +167,10 @@ const Taskschema = mongoose.Schema(
         required: true,
       },
       last_name: {
+        type: String,
+        required: true,
+      },
+      employee_code: {
         type: String,
         required: true,
       },

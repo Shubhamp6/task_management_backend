@@ -13,6 +13,7 @@ const UploadFileService = require("../../services/UploadFile.service");
 const TaskModel = require("../../model/Task.model");
 const NotificationModel = require("../../model/Notification.model");
 const SendNotifcationService = require("../../services/SendNotification.service");
+const ReminderModel = require("../../model/Reminder.model");
 
 const CreateTaskController = [
   UploadFileService.any("attachmentFiles"),
@@ -252,6 +253,56 @@ const CreateTaskController = [
         },
         sendTo
       );
+
+      // Scheduling reminders for the task
+      const year = due_date.getYear(),
+        month = due_date.getMonth(),
+        date = due_date.getDate(),
+        hours = due_time.getHours(),
+        minutes = due_time.getMinutes();
+      const deadline = new Date(year, month, date, hours, minutes);
+
+      const twoDayBefore = new Date(
+        deadline.getTime() - 2 * 24 * 60 * 60 * 1000
+      );
+      const oneDayBefore = new Date(deadline.getTime() - 24 * 60 * 60 * 1000);
+      const firstOnDealineDay = new Date(
+        deadline.getTime() - 15 * 60 * 60 * 1000
+      );
+      const secondOnDealineDay = new Date(
+        deadline.getTime() - 10 * 60 * 60 * 1000
+      );
+      const thirdOnDealineDay = new Date(
+        deadline.getTime() - 5 * 60 * 60 * 1000
+      );
+
+      await ReminderModel.insertMany([
+        {
+          taks: mongoose.Types.ObjectId(task._id),
+          scheduled_time: twoDayBefore,
+          body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
+        },
+        {
+          taks: mongoose.Types.ObjectId(task._id),
+          scheduled_time: oneDayBefore,
+          body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
+        },
+        {
+          taks: mongoose.Types.ObjectId(task._id),
+          scheduled_time: firstOnDealineDay,
+          body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
+        },
+        {
+          taks: mongoose.Types.ObjectId(task._id),
+          scheduled_time: secondOnDealineDay,
+          body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
+        },
+        {
+          taks: mongoose.Types.ObjectId(task._id),
+          scheduled_time: thirdOnDealineDay,
+          body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
+        },
+      ]);
 
       return apiResponseHelper.successResponse(res, "task succeffuly created");
     } catch (e) {

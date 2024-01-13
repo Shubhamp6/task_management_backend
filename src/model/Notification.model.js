@@ -15,7 +15,7 @@ const Notificationschema = mongoose.Schema(
       require: true,
     },
     task: {
-      type: String,
+      type:  mongoose.Schema.ObjectId,
       ref: "tasks",
       required: true,
     },
