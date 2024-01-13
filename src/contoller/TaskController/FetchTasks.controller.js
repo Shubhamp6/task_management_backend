@@ -25,7 +25,7 @@ const FetchTasksController = [
           $or: [
             { "assignees_working.id": user_id },
             { "assignees_not_working.id": user_id },
-            { "repoter.id": user_id },
+            { "reporter.id": user_id },
           ],
         };
       } else {

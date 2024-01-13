@@ -23,7 +23,7 @@ const UpdateTaskController = [
     .trim()
     .escape(),
 
-  body("discription")
+  body("description")
     .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("project_description_required")
@@ -130,9 +130,9 @@ const UpdateTaskController = [
     })
     .withMessage("invalid_assignee_id")
     .trim(),
-  body("repoter.id")
+  body("reporter.id")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("repoter_id_required")
+    .withMessage("reporter_id_required")
     .bail()
     .custom(async (val, { req }) => {
       if (val) {
@@ -141,15 +141,15 @@ const UpdateTaskController = [
         });
         if (
           !user ||
-          user.first_name != req.body.repoter.first_name ||
-          user.last_name != req.body.repoter.last_name
+          user.first_name != req.body.reporter.first_name ||
+          user.last_name != req.body.reporter.last_name
         ) {
-          throw Error("repoter not valid");
+          throw Error("reporter not valid");
         }
       }
       return val;
     })
-    .withMessage("invalid_repoter_id")
+    .withMessage("invalid_reporter_id")
     .trim(),
   body("parent_task")
     .optional()

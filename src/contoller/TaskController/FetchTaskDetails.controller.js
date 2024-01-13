@@ -33,7 +33,7 @@ const FetchTaskDetailsController = [
           { "assignor.id": userId },
           { "assignees_working.id": userId },
           { "assignees_not_working.id": userId },
-          { "repoter.id": userId },
+          { "reporter.id": userId },
         ],
       });
       return apiResponseHelper.successResponseWithData(

@@ -23,7 +23,7 @@ const CreateTaskController = [
     .trim()
     .escape(),
 
-  body("discription")
+  body("description")
     .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("project_description_required")
@@ -128,9 +128,9 @@ const CreateTaskController = [
     .withMessage("invalid_assignee_id")
     .trim()
     .escape(),
-  body("repoter.id")
+  body("reporter.id")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("repoter_id_required")
+    .withMessage("reporter_id_required")
     .bail()
     .custom(async (val, { req }) => {
       if (val) {
@@ -139,15 +139,15 @@ const CreateTaskController = [
         });
         if (
           !user ||
-          user.first_name != req.body.repoter.first_name ||
-          user.last_name != req.body.repoter.last_name
+          user.first_name != req.body.reporter.first_name ||
+          user.last_name != req.body.reporter.last_name
         ) {
-          throw Error("repoter not valid");
+          throw Error("reporter not valid");
         }
       }
       return val;
     })
-    .withMessage("invalid_repoter_id")
+    .withMessage("invalid_reporter_id")
     .trim()
     .escape(),
 
@@ -176,7 +176,7 @@ const CreateTaskController = [
     try {
       const {
         name,
-        discription,
+        description,
         project,
         priority,
         start_date,
@@ -184,7 +184,7 @@ const CreateTaskController = [
         due_time,
         assignor,
         initial_assignees,
-        repoter,
+        reporter,
         parent_task,
       } = req.body;
 
@@ -217,7 +217,7 @@ const CreateTaskController = [
       // Create new task
       const task = await TaskModel.create({
         name,
-        discription,
+        description,
         project,
         priority,
         attachments,
@@ -227,11 +227,11 @@ const CreateTaskController = [
         assignor,
         initial_assignees,
         assingees_with_add_authority,
-        repoter,
+        reporter,
         parent_task,
       });
 
-      initial_assignees.push(repoter);
+      initial_assignees.push(reporter);
 
       const sendTo = initial_assignees.map((assignee) => {
         return assignee.id;

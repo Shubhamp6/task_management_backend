@@ -11,6 +11,7 @@ const mongoose = require("mongoose");
 const tokenVerifier = require("./src/middleware/tokenVerifiers.middleware");
 const task = require("./src/routes/task.routes");
 const project = require("./src/routes/project.routes");
+const notification = require("./src/routes/notification.routes");
 mongoose.set("strictQuery", false);
 dotenv.config();
 
@@ -54,6 +55,7 @@ app.use("/task-management/v1/api/auth", auth);
 app.use("/task-management/v1/api/user", tokenVerifier, users);
 app.use("/task-management/v1/api/task", tokenVerifier, task);
 app.use("/task-management/v1/api/project", tokenVerifier, project);
+app.use("/task-management/v1/api/notification", tokenVerifier, notification);
 
 app.listen(process.env.PORT, () => {
   console.log("Started the server at " + process.env.PORT);

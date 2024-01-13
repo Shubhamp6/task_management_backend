@@ -86,7 +86,7 @@ const UpdateTaskStatusController = [
         const sendTo = task.assignees_working.map((assignee) => {
           return assignee.id;
         });
-        sendTo.push(task.repoter.id);
+        sendTo.push(task.reporter.id);
         sendTo.push(task.assignor.id);
 
         await NotificationModel.create({

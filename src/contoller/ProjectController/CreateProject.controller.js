@@ -13,7 +13,7 @@ const CreateProjectController = [
     .trim()
     .escape(),
 
-  body("discription")
+  body("description")
     .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("project_description_required")
@@ -83,7 +83,6 @@ const CreateProjectController = [
   async (req, res, next) => {
     try {
       const projectDetails = req.body;
-      console.log(projectDetails);
       if (!projectDetails.head)
         projectDetails.head = {
           id: mongoose.Types.ObjectId(req.user._id),

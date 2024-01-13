@@ -10,7 +10,7 @@ const Taskschema = mongoose.Schema(
       type: String,
       required: true,
     },
-    discription: {
+    description: {
       type: String,
       required: true,
     },
@@ -156,7 +156,7 @@ const Taskschema = mongoose.Schema(
         },
       },
     ],
-    repoter: {
+    reporter: {
       id: {
         type: mongoose.Schema.ObjectId,
         ref: "users",
