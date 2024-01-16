@@ -255,11 +255,13 @@ const CreateTaskController = [
       );
 
       // Scheduling reminders for the task
-      const year = due_date.getYear(),
-        month = due_date.getMonth(),
-        date = due_date.getDate(),
-        hours = due_time.getHours(),
-        minutes = due_time.getMinutes();
+      const dueDate = new Date(due_date);
+      const dueTime = new Date(due_time);
+      const year = dueDate.getYear(),
+        month = dueDate.getMonth(),
+        date = dueDate.getDate(),
+        hours = dueTime.getHours(),
+        minutes = dueTime.getMinutes();
       const deadline = new Date(year, month, date, hours, minutes);
 
       const twoDayBefore = new Date(
