@@ -237,13 +237,13 @@ const CreateTaskController = [
         return assignee.id;
       });
       // Adding notification of task created in notification model
-      await NotificationModel.create({
-        title: NOTIFICATION_TITLE.taskAssignedPrimary,
-        body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
-        task: task._id,
-        type: NOTIFICATION_TYPE.taskAssignedPrimary,
-        sentTo: sendTo,
-      });
+      // await NotificationModel.create({
+      //   title: NOTIFICATION_TITLE.taskAssignedPrimary,
+      //   body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
+      //   task: task._id,
+      //   type: NOTIFICATION_TYPE.taskAssignedPrimary,
+      //   sentTo: sendTo,
+      // });
 
       //Sending notification to all concern persons
       await SendNotifcationService(
