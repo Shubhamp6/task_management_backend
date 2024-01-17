@@ -1,4 +1,4 @@
-const { body, check } = require("express-validator");
+const { body, check, query } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.middleware");
 const apiResponseHelper = require("../../utils/apiResponse.helper");
 const UserModel = require("../../model/User.model");
@@ -7,7 +7,6 @@ const { PRIORITIES } = require("../../utils/constants/common.constants");
 const ProjectModel = require("../../model/Project.model");
 const UploadFileService = require("../../services/UploadFile.service");
 const TaskModel = require("../../model/Task.model");
-const { query } = require("express");
 
 const UpdateTaskController = [
   UploadFileService.any("attachmentFiles"),
