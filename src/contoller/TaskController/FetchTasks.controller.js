@@ -38,7 +38,6 @@ const FetchTasksController = [
       query.push({
         $match: filterCondition,
       });
-      console.log(filterCondition);
       if (taskFetchType == TASK_FETCH_TYPE.myTasks)
         afterQuery.push({
           $project: {
@@ -49,7 +48,14 @@ const FetchTasksController = [
             due_time: 1,
             isAccepted: {
               $cond: {
-                if: { assignees_working: user_id },
+                if: {
+                  $or: [
+                    {
+                      $in: [user_id, "$assignees_working.id"],
+                    },
+                    { $eq: ["$reporter.id", user_id] },
+                  ],
+                },
                 then: true,
                 else: false,
               },

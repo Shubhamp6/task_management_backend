@@ -6,7 +6,7 @@ const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.mi
 const TaskModel = require("../../model/Task.model");
 const { TASK_ACTION_TYPE, NOTIFICATION_TYPE, NOTIFICATION_TITLE } = require("../../utils/constants/common.constants");
 
-const AcceptOrDeclineTaskController = [
+const AddAssingeesController = [
   body("id")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("task_id_required"),
@@ -69,4 +69,4 @@ const AcceptOrDeclineTaskController = [
   },
 ];
 
-module.exports = AcceptOrDeclineTaskController;
+module.exports = AddAssingeesController;

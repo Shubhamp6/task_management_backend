@@ -231,8 +231,6 @@ const CreateTaskController = [
         parent_task,
       });
 
-      initial_assignees.push(reporter);
-
       const sendTo = initial_assignees.map((assignee) => {
         return assignee.id;
       });
@@ -244,15 +242,30 @@ const CreateTaskController = [
       //   type: NOTIFICATION_TYPE.taskAssignedPrimary,
       //   sentTo: sendTo,
       // });
+      // await NotificationModel.create({
+      //   title: NOTIFICATION_TITLE.taskAccepted,
+      //   body: `You are added to ${name} task as reporter by ${assignor.first_name} ${assignor.last_name}`,
+      //   task: task._id,
+      //   type: NOTIFICATION_TYPE.taskAssignedPrimary,
+      //   sentTo: [reporter.id],
+      // });
 
       //Sending notification to all concern persons
-      await SendNotifcationService(
-        {
-          title: NOTIFICATION_TITLE.taskAssignedPrimary,
-          body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
-        },
-        sendTo
-      );
+      // await SendNotifcationService(
+      //   {
+      //     title: NOTIFICATION_TITLE.taskAssignedPrimary,
+      //     body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
+      //   },
+      //   sendTo
+      // );
+
+      // await SendNotifcationService(
+      //   {
+      //     title: NOTIFICATION_TITLE.taskAccepted,
+      //     body: `You are added to ${name} task as reporter by ${assignor.first_name} ${assignor.last_name}`,
+      //   },
+      //   [reporter.id]
+      // );
 
       // Scheduling reminders for the task
       const dueDate = new Date(due_date);

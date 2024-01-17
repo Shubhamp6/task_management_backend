@@ -19,7 +19,14 @@ const FetchUsersController = [
       query.push({
         $match: filterCondition,
       });
-
+      afterQuery.push({
+        $project: {
+          _id: 1,
+          first_name: 1,
+          last_name: 1,
+          employee_code: 1,
+        },
+      });
       const users = await new ResponseGenratorService(
         req,
         model
