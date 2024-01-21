@@ -5,7 +5,7 @@ const { body } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.middleware");
 const WhiteboardModel = require("../../model/Whiteboard.model");
 
-const CreateWhiteboardController = [
+const DeleteWhiteboardController = [
   body("id")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("whiteboard_id_required")
@@ -45,4 +45,4 @@ const CreateWhiteboardController = [
   },
 ];
 
-module.exports = CreateWhiteboardController;
+module.exports = DeleteWhiteboardController;

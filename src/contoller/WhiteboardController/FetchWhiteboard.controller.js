@@ -30,19 +30,34 @@ const FetchWhiteboardController = [
     try {
       const whiteboardId = mongoose.Types.ObjectId(req.query.id),
         userId = mongoose.Types.ObjectId(req.user._id);
-      const whiteboard = await WhiteboardModel.find({
-        _id: whiteboardId,
-        $or: [{ "creator.id": userId }, { "share_with.id": userId }],
-      });
+      const whiteboard = await WhiteboardModel.aggregate([
+        {
+          $match: {
+            $and: [
+              { _id: whiteboardId },
+              { $or: [{ "creator.id": userId }, { "share_with.id": userId }] },
+            ],
+          },
+        },
+        {
+          $lookup: {
+            from: "stickynotes",
+            localField: "_id",
+            foreignField: "whiteboard",
+            as: "stickynotes",
+          },
+        },
+      ]);
 
       if (!whiteboard)
         return apiResponseHelper.notFoundResponse(res, "whiteboard not found");
       return apiResponseHelper.successResponseWithData(
         res,
-        "whiteboard deleted",
+        "whiteboard fetched successfuly",
         whiteboard
       );
     } catch (e) {
+      console.log(e);
       return apiResponseHelper.errorResponse(res, _lang("server_error"));
     }
   },

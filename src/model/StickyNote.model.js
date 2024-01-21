@@ -10,6 +10,11 @@ const StickyNoteschema = mongoose.Schema(
       type: String,
       required: true,
     },
+    whiteboard: {
+      type: mongoose.Schema.ObjectId,
+      ref: "projects",
+      required: true,
+    },
   },
   { timestamps: true }
 );

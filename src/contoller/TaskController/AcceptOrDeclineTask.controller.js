@@ -88,6 +88,7 @@ const AcceptOrDeclineTaskController = [
 
       return apiResponseHelper.successResponse(res, "task details updated");
     } catch (e) {
+      console.log(e)
       return apiResponseHelper.errorResponse(res, _lang("server_error"));
     }
   },

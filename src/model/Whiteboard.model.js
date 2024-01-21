@@ -6,15 +6,6 @@ const Whiteboardschema = mongoose.Schema(
       type: String,
       required: true,
     },
-    sticky_notes: [
-      {
-        id: {
-          type: mongoose.Schema.ObjectId,
-          ref: "stickynotes",
-          required: true,
-        },
-      },
-    ],
     creator: {
       id: {
         type: mongoose.Schema.ObjectId,
