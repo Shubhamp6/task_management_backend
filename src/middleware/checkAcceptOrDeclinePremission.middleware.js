@@ -12,7 +12,6 @@ const checkAcceptOrDeclinePremission = async (req, res, next) => {
         "initial_assingees.id": userId,
       },
     );
-    console.log(task)
     if (!task)
       return apiResponseHelper.unauthorizedResponse(
         res,
@@ -20,6 +19,7 @@ const checkAcceptOrDeclinePremission = async (req, res, next) => {
       );
     next();
   }catch(error){
+    console.log(e)
     return apiResponseHelper.errorResponse(res,"server error");
   }
 };

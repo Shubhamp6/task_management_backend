@@ -27,7 +27,6 @@ const AcceptOrDeclineTaskController = [
         taskId = mongoose.Types.ObjectId(req.body.id),
         userId = mongoose.Types.ObjectId(req.user._id),
         name = `${req.user.first_name} ${req.user.last_name}`;
-
       var update = {},
         notification = {};
       if (action == TASK_ACTION_TYPE.accept) {
@@ -65,18 +64,18 @@ const AcceptOrDeclineTaskController = [
       }
 
       const task = await TaskModel.findOneAndUpdate(
-        { _id: taskId, initial_assignees: userId },
+        { _id: taskId, "initial_assignees.id": userId },
         {
           ...update,
         }
       );
-
-      if (notification.title == NOTIFICATION_TITLE.taskAccepted)
+      if (notification.title == NOTIFICATION_TITLE.taskAccepted) {
         notification.body = `${name} has accepted ${task.name} task assinged by you`;
-      else
+      } else {
         notification.body = `${name} has declined ${task.name} task assinged by you`;
+      }
 
-      await SendNotifcationService(notification, [task.assignor.id]);
+      // await SendNotifcationService(notification, [task.assignor.id]);
 
       await NotificationModel.create({
         title: notification.title,
@@ -88,7 +87,7 @@ const AcceptOrDeclineTaskController = [
 
       return apiResponseHelper.successResponse(res, "task details updated");
     } catch (e) {
-      console.log(e)
+      console.log(e);
       return apiResponseHelper.errorResponse(res, _lang("server_error"));
     }
   },
