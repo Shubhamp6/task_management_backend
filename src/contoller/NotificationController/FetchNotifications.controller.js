@@ -13,7 +13,7 @@ const FetchNotificationsController = [
         query = [],
         afterQuery = [];
       const condition = {
-        sendTo: userId,
+        sentTo: userId,
       };
 
       const filterCondition = await new ResponseGenratorService(
@@ -28,7 +28,6 @@ const FetchNotificationsController = [
       afterQuery.push({
         $sort: { createdAt: -1 },
       });
-
       const notifications = await new ResponseGenratorService(
         req,
         model
