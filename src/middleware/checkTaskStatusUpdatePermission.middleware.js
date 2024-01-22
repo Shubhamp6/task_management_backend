@@ -9,7 +9,7 @@ const checkTaskStatusUpdatePermission = async (req, res, next) => {
 
     const task = await TaskModel.findOneAndUpdate({
       _id: taskId,
-      $or: [{ "assingees_working.id": userId }, { assignor: userId }],
+      $or: [{ "assingees_working.id": userId }, { "assignor.id": userId }],
     });
     if (!task)
       return apiResponseHelper.unauthorizedResponse(
