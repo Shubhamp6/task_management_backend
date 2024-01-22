@@ -82,7 +82,7 @@ const UpdateTaskStatusController = [
         }
       );
 
-      if (updatedData.status.type) {
+      if (updatedData.status && updatedData.status.type) {
         const sendTo = task.assignees_working.map((assignee) => {
           return assignee.id;
         });

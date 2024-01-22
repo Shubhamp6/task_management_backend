@@ -49,7 +49,7 @@ const AcceptOrDeclineTaskController = [
         };
       } else {
         update = {
-          $pull: { initial_assingees: { id: userId } },
+          $pull: { initial_assignees: { id: userId } },
           $push: {
             assignees_not_working: {
               id: userId,

@@ -7,10 +7,10 @@ const checkTaskStatusUpdatePermission = async (req, res, next) => {
     const userId = mongoose.Types.ObjectId(req.user._id),
       taskId = mongoose.Types.ObjectId(req.body.id);
 
-    const task = await TaskModel.findOneAndUpdate({
-      _id: taskId,
-      $or: [{ "assingees_working.id": userId }, { "assignor.id": userId }],
-    });
+    const task = await TaskModel.findOneAndUpdate(
+      { _id: taskId },
+      { $or: [{ "assingees_working.id": userId }, { "assignor.id": userId }] }
+    );
     if (!task)
       return apiResponseHelper.unauthorizedResponse(
         res,

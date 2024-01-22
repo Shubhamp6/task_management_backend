@@ -9,7 +9,7 @@ const checkAcceptOrDeclinePremission = async (req, res, next) => {
     const task = await TaskModel.findOneAndUpdate(
       {
         _id: taskId,
-        "initial_assingees.id": userId,
+        "initial_assignees.id": userId,
       },
     );
     if (!task)

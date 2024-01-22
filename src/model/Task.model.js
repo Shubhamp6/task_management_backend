@@ -134,7 +134,7 @@ const Taskschema = mongoose.Schema(
         },
       },
     ],
-    assingees_with_add_authority: [
+    assignees_with_add_authority: [
       {
         id: {
           type: mongoose.Schema.ObjectId,

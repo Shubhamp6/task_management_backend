@@ -35,7 +35,7 @@ const AddAssingeesController = [
       const task = await TaskModel.findOneAndUpdate(
         {
           _id: taskId,
-          "assingees_with_add_authority.id": userId,
+          ".id": userId,
         },
         { $push: { intial_assingees: { $each: secondary_assignees } } }
       );

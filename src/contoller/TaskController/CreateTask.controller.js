@@ -188,7 +188,7 @@ const CreateTaskController = [
         parent_task,
       } = req.body;
 
-      const assingees_with_add_authority = initial_assignees;
+      const assignees_with_add_authority = initial_assignees;
 
       // If assignor is not specified make creator of task assignor
       if (!assignor)
@@ -226,7 +226,7 @@ const CreateTaskController = [
         due_time,
         assignor,
         initial_assignees,
-        assingees_with_add_authority,
+        assignees_with_add_authority,
         reporter,
         parent_task,
       });

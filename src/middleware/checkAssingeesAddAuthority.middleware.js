@@ -10,9 +10,9 @@ const checkAssingeesAddAuthority = async (req, res, next) => {
     const task = await TaskModel.findOneAndUpdate(
       {
         _id: taskId,
-        "assingees_with_add_authority.id": userId,
+        "assignees_with_add_authority.id": userId,
       },
-      { $pull: { assingees_with_add_authority: { id: userId } } }
+      { $pull: { assignees_with_add_authority: { id: userId } } }
     );
     if (!task)
       return apiResponseHelper.unauthorizedResponse(
