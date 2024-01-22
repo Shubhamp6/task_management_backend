@@ -29,9 +29,17 @@ const UpdateStickyNoteController = [
     .notEmpty({ ignore_whitespace: true })
     .withMessage("sticky_note_description_required"),
   body("color")
-    .optional()
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("sticky_note_color_required"),
+    .withMessage("sticky_note_color_required")
+    .bail()
+    .custom((val) => {
+      if (!Object.values(STICKY_NOTES_COLORS).includes(val)) {
+        throw Error("bad_sticky_note_color_selcetion");
+      }
+      return true;
+    })
+    .trim()
+    .escape(),
 
   PayloadValidatorMiddleware,
   async (req, res) => {
