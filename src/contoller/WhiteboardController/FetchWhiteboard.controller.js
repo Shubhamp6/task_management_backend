@@ -35,7 +35,7 @@ const FetchWhiteboardController = [
           $match: {
             $and: [
               { _id: whiteboardId },
-              { $or: [{ "creator.id": userId }, { "share_with.id": userId }] },
+              { $or: [{ "creator.id": userId }, { "shared_with.id": userId }] },
             ],
           },
         },

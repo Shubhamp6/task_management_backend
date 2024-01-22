@@ -16,7 +16,7 @@ const FetchWhiteboardListController = [
         query = [],
         afterQuery = [];
       const condition = {
-        $or: [{ "creator.id": userId }, { "share_with.id": userId }],
+        $or: [{ "creator.id": userId }, { "shared_with.id": userId }],
       };
 
       const filterCondition = await new ResponseGenratorService(
