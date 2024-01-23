@@ -57,7 +57,7 @@ const UpdateTaskStatusController = [
     try {
       const updatedData = req.body;
       const status = {};
-      if (!updatedData.description) {
+      if (updatedData.status) {
         if (updatedData.status.type) {
           updatedData.description = `${req.user.first_name} ${req.user.last_name} updated status to ${updatedData.status.type}`;
           if (updatedData.status.description) {
@@ -65,7 +65,8 @@ const UpdateTaskStatusController = [
             status["status.type"] = updatedData.status.type;
           } else status["status.type"] = updatedData.status.type;
         } else {
-          updatedData.description = `${req.user.first_name} ${req.user.last_name} updated progress precentage to ${updatedData.status.type}`;
+          console.log(1);
+          updatedData.description = `${req.user.first_name} ${req.user.last_name} updated progress precentage to ${updatedData.status.compeletion_percentage}`;
           status["status.description"] = updatedData.status.description;
         }
       }
