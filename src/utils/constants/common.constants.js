@@ -46,12 +46,12 @@ const NOTIFICATION_TITLE = {
 };
 
 const STICKY_NOTES_COLORS = {
-  sage: "Color(0xFFDCFFB7)",
-  peach: "Color(0xFFFFB996)",
-  green: "Color(0xDCFFB7)",
-  blue: "Color(0xDCF2F1)",
-  pink: "Color(0xFED9ED)",
-  orange: "Color(0xF3B95F)",
+  sage: "Color(0xffdcffb7)",
+  peach: "Color(0xffffb996)",
+  green: "Color(0xdcffb7)",
+  blue: "Color(0xdcf2f1)",
+  pink: "Color(0xfed9ed)",
+  orange: "Color(0xf3bd5f)",
 };
 
 // const USER_ROLES = {
