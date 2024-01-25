@@ -48,9 +48,9 @@ const NOTIFICATION_TITLE = {
 const STICKY_NOTES_COLORS = {
   sage: "Color(0xffdcffb7)",
   peach: "Color(0xffffb996)",
-  green: "Color(0xdcffb7)",
-  blue: "Color(0xdcf2f1)",
-  pink: "Color(0xfed9ed)",
+  green: "Color(0xfffed9ed)",
+  blue: "Color(0xfffdf0d1)",
+  pink: "Color(0xffdcf2f1)",
   orange: "Color(0xf3bd5f)",
 };
 

@@ -9,6 +9,8 @@ const {
   NOTIFICATION_TITLE,
   NOTIFICATION_TYPE,
 } = require("../../utils/constants/common.constants");
+const NotificationModel = require("../../model/Notification.model");
+const SendNotifcationService = require("../../services/SendNotification.service");
 
 const UpdateTaskStatusController = [
   body("id")
@@ -58,18 +60,27 @@ const UpdateTaskStatusController = [
       const updatedData = req.body;
       const status = {};
       if (updatedData.status) {
-        if (updatedData.status.type) {
-          updatedData.description = `${req.user.first_name} ${req.user.last_name} updated status to ${updatedData.status.type}`;
-          if (updatedData.status.description) {
-            status["status.description"] = updatedData.status.description;
-            status["status.type"] = updatedData.status.type;
-          } else status["status.type"] = updatedData.status.type;
+        if (
+          updatedData.status.type &&
+          updatedData.status.compeletion_percentage
+        ) {
+          status["status.compeletion_percentage"] =
+            updatedData.status.compeletion_percentage;
+          status["status.type"] = updatedData.status.type;
+        } else if (updatedData.status.type) {
+          status["type"] = updatedData.status.type;
+          if (!updatedData.description)
+            updatedData.description = `${req.user.first_name} ${req.user.last_name} updated status to ${updatedData.status.type}`;
         } else {
-          console.log(1);
-          updatedData.description = `${req.user.first_name} ${req.user.last_name} updated progress precentage to ${updatedData.status.compeletion_percentage}`;
-          status["status.description"] = updatedData.status.description;
+          if (!updatedData.description)
+            updatedData[
+              "description"
+            ] = `${req.user.first_name} ${req.user.last_name} updated progress precentage to ${updatedData.status.compeletion_percentage}`;
+          status["compeletion_percentage"] =
+            updatedData.status.compeletion_percentage;
         }
       }
+      console.log(status);
       const task = await TaskModel.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(updatedData.id) },
         {
@@ -79,7 +90,7 @@ const UpdateTaskStatusController = [
               time: new Date(),
             },
           },
-          ...status,
+          $set: status,
         }
       );
 
