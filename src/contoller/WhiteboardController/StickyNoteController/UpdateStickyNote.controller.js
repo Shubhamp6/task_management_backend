@@ -29,6 +29,7 @@ const UpdateStickyNoteController = [
     .notEmpty({ ignore_whitespace: true })
     .withMessage("sticky_note_description_required"),
   body("color")
+    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("sticky_note_color_required")
     .bail()
