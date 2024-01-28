@@ -43,6 +43,9 @@ mongoose
   })
   .then(() => {
     console.log("connected to DB");
+    app.listen(process.env.PORT, () => {
+      console.log("Started the server at " + process.env.PORT);
+    });
   })
   .catch((err) => {
     console.log(err);
@@ -58,7 +61,3 @@ app.use("/task-management/v1/api/task", tokenVerifier, task);
 app.use("/task-management/v1/api/project", tokenVerifier, project);
 app.use("/task-management/v1/api/notification", tokenVerifier, notification);
 app.use("/task-management/v1/api/whiteboard", tokenVerifier, whiteboard);
-
-app.listen(process.env.PORT, () => {
-  console.log("Started the server at " + process.env.PORT);
-});
