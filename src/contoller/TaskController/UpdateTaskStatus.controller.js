@@ -60,28 +60,13 @@ const UpdateTaskStatusController = [
       const updatedData = req.body;
       const status = {};
       if (updatedData.status) {
-        if (
-          updatedData.status.type &&
-          updatedData.status.compeletion_percentage
-        ) {
-          status["status.compeletion_percentage"] =
+        status["status.compeletion_percentage"] =
           updatedData.status.compeletion_percentage;
-          status["status.type"] = updatedData.status.type;
-          if (!updatedData.description)
-            updatedData.description = `${req.user.first_name} ${req.user.last_name} updated status to ${updatedData.status.type}`;
-        } else if (updatedData.status.type) {
-          status["type"] = updatedData.status.type;
-          if (!updatedData.description)
-            updatedData.description = `${req.user.first_name} ${req.user.last_name} updated status to ${updatedData.status.type}`;
-        } else {
-          if (!updatedData.description)
-            updatedData[
-              "description"
-            ] = `${req.user.first_name} ${req.user.last_name} updated progress precentage to ${updatedData.status.compeletion_percentage}`;
-          status["compeletion_percentage"] =
-            updatedData.status.compeletion_percentage;
-        }
+        status["status.type"] = updatedData.status.type;
+        if (!updatedData.description)
+          updatedData.description = `${req.user.first_name} ${req.user.last_name} changed task status`;
       }
+      console.log(status);
       const task = await TaskModel.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(updatedData.id) },
         {
@@ -92,9 +77,10 @@ const UpdateTaskStatusController = [
             },
           },
           $set: status,
-        }
+        },
+        { new: true }
       );
-
+      console.log(task);
       if (updatedData.status && updatedData.status.type) {
         const sendTo = task.assignees_working.map((assignee) => {
           return assignee.id;
@@ -104,7 +90,7 @@ const UpdateTaskStatusController = [
 
         await NotificationModel.create({
           title: NOTIFICATION_TITLE.taskStatusChanged,
-          body: `${task.name} status changed to ${updatedData.status.type} by ${req.user.first_name} ${req.user.last_name}`,
+          body: `${task.name} status changed`,
           task: task._id,
           type: NOTIFICATION_TYPE.taskStatusChanged,
           sentTo: sendTo,
@@ -114,7 +100,7 @@ const UpdateTaskStatusController = [
         await SendNotifcationService(
           {
             title: NOTIFICATION_TITLE.taskStatusChanged,
-            body: `${task.name} status changed to ${updatedData.status.type} by ${req.user.first_name} ${req.user.last_name}`,
+            body: `${task.name} status changed`,
           },
           sendTo
         );
