@@ -80,7 +80,6 @@ const UpdateTaskStatusController = [
             updatedData.status.compeletion_percentage;
         }
       }
-      console.log(status);
       const task = await TaskModel.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(updatedData.id) },
         {

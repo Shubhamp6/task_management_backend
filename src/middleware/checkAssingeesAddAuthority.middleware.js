@@ -10,7 +10,10 @@ const checkAssingeesAddAuthority = async (req, res, next) => {
     const task = await TaskModel.findOneAndUpdate(
       {
         _id: taskId,
-        "assignees_with_add_authority.id": userId,
+        $or: [
+          { "assignees_with_add_authority.id": userId },
+          { "assignor.id": userId },
+        ],
       },
       { $pull: { assignees_with_add_authority: { id: userId } } }
     );

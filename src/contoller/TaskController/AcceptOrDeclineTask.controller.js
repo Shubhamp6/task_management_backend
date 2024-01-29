@@ -41,6 +41,7 @@ const AcceptOrDeclineTaskController = [
               id: userId,
               first_name: req.user.first_name,
               last_name: req.user.last_name,
+              employee_code: req.user.employee_code,
             },
           },
         };
@@ -55,6 +56,7 @@ const AcceptOrDeclineTaskController = [
               id: userId,
               first_name: req.user.first_name,
               last_name: req.user.last_name,
+              employee_code: req.user.employee_code,
             },
           },
         };
@@ -71,8 +73,10 @@ const AcceptOrDeclineTaskController = [
       );
       if (notification.title == NOTIFICATION_TITLE.taskAccepted) {
         notification.body = `${name} has accepted ${task.name} task assinged by you`;
+        notification.type = NOTIFICATION_TYPE.taskAccepted;
       } else {
         notification.body = `${name} has declined ${task.name} task assinged by you`;
+        notification.type = NOTIFICATION_TYPE.taskDeclined;
       }
 
       // await SendNotifcationService(notification, [task.assignor.id]);
@@ -81,7 +85,7 @@ const AcceptOrDeclineTaskController = [
         title: notification.title,
         body: notification.body,
         task: task._id,
-        type: NOTIFICATION_TYPE.taskAssigned,
+        type: notification.type,
         sentTo: [task.assignor.id],
       });
 

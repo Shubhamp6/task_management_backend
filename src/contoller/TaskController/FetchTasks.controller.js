@@ -10,7 +10,16 @@ const mongoose = require("mongoose");
 const FetchTasksController = [
   query("taskFetchType")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("task_fetch_type_required"),
+    .withMessage("task_fetch_type_required")
+    .bail()
+    .custom((val) => {
+      if (!Object.values(TASK_FETCH_TYPE).includes(val)) {
+        throw Error("bad_task_fetch_type");
+      }
+      return true;
+    })
+    .trim()
+    .escape(),
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
@@ -31,6 +40,7 @@ const FetchTasksController = [
       } else {
         condition = { "assignor.id": user_id };
       }
+      console.log(condition);
       const filterCondition = await new ResponseGenratorService(
         req,
         model

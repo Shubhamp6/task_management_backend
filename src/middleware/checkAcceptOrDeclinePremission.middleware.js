@@ -6,12 +6,13 @@ const checkAcceptOrDeclinePremission = async (req, res, next) => {
   try{
     const userId = mongoose.Types.ObjectId(req.user._id),
       taskId = mongoose.Types.ObjectId(req.body.id);
-    const task = await TaskModel.findOneAndUpdate(
+    const task = await TaskModel.findOne(
       {
         _id: taskId,
         "initial_assignees.id": userId,
       },
     );
+    console.log(task)
     if (!task)
       return apiResponseHelper.unauthorizedResponse(
         res,
@@ -19,7 +20,7 @@ const checkAcceptOrDeclinePremission = async (req, res, next) => {
       );
     next();
   }catch(error){
-    console.log(e)
+    console.log(error);
     return apiResponseHelper.errorResponse(res,"server error");
   }
 };
