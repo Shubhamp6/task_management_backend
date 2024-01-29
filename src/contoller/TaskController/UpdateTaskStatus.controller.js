@@ -65,8 +65,10 @@ const UpdateTaskStatusController = [
           updatedData.status.compeletion_percentage
         ) {
           status["status.compeletion_percentage"] =
-            updatedData.status.compeletion_percentage;
+          updatedData.status.compeletion_percentage;
           status["status.type"] = updatedData.status.type;
+          if (!updatedData.description)
+            updatedData.description = `${req.user.first_name} ${req.user.last_name} updated status to ${updatedData.status.type}`;
         } else if (updatedData.status.type) {
           status["type"] = updatedData.status.type;
           if (!updatedData.description)
