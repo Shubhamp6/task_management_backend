@@ -4,7 +4,11 @@ const mongoose = require("mongoose");
 const { body } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.middleware");
 const TaskModel = require("../../model/Task.model");
-const { TASK_ACTION_TYPE, NOTIFICATION_TYPE, NOTIFICATION_TITLE } = require("../../utils/constants/common.constants");
+const {
+  TASK_ACTION_TYPE,
+  NOTIFICATION_TYPE,
+  NOTIFICATION_TITLE,
+} = require("../../utils/constants/common.constants");
 
 const AddAssingeesController = [
   body("id")
@@ -35,7 +39,6 @@ const AddAssingeesController = [
       const task = await TaskModel.findOneAndUpdate(
         {
           _id: taskId,
-          ".id": userId,
         },
         { $push: { intial_assingees: { $each: secondary_assignees } } }
       );
