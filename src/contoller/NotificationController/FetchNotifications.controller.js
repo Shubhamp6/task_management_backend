@@ -25,9 +25,8 @@ const FetchNotificationsController = [
         $match: filterCondition,
       });
 
-      afterQuery.push({
-        $sort: { createdAt: -1 },
-      });
+      query.push({ $sort: { createdAt: -1 } });
+
       const notifications = await new ResponseGenratorService(
         req,
         model
