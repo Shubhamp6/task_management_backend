@@ -9,6 +9,7 @@ const FetchTaskDetailsController = [
   query("id")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("task_id_required")
+    .bail()
     .custom(async (val, { req }) => {
       if (val) {
         const task = await TaskModel.findOne({

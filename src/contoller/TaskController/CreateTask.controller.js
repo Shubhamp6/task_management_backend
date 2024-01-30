@@ -250,6 +250,21 @@ const CreateTaskController = [
       //   sentTo: [reporter.id],
       // });
 
+      // await NotificationModel.create({
+      //   title: NOTIFICATION_TITLE.taskAccepted,
+      //   body: `You have accepted task - ${name}`,
+      //   task: task._id,
+      //   type: NOTIFICATION_TYPE.taskAccepted,
+      //   sentTo: [],
+      // });
+      // await NotificationModel.create({
+      //   title: NOTIFICATION_TITLE.taskDeclined,
+      //   body: `You have declined task - ${name}`,
+      //   task: task._id,
+      //   type: NOTIFICATION_TYPE.taskDeclined,
+      //   sentTo: [],
+      // });
+
       //Sending notification to all concern persons
       // await SendNotifcationService(
       //   {

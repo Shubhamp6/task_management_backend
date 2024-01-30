@@ -18,7 +18,38 @@ const AcceptOrDeclineTaskController = [
     .withMessage("action_required"),
   body("id")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("task_id_required"),
+    .withMessage("task_id_required")
+    .bail()
+    .custom(async (val, { req }) => {
+      if (val) {
+        const task = await TaskModel.findOne({
+          _id: mongoose.Types.ObjectId(val),
+        });
+        if (!task) {
+          throw Error("task not valid");
+        }
+      }
+      return val;
+    })
+    .withMessage("invalid_task_id")
+    .trim(),
+  body("notificationId")
+    .notEmpty({ ignore_whitespace: true })
+    .withMessage("notification_id_required")
+    .bail()
+    .custom(async (val, { req }) => {
+      if (val) {
+        const task = await NotificationModel.findOne({
+          _id: mongoose.Types.ObjectId(val),
+        });
+        if (!task) {
+          throw Error("notification not valid");
+        }
+      }
+      return val;
+    })
+    .withMessage("invalid_notification_id")
+    .trim(),
 
   PayloadValidatorMiddleware,
   async (req, res) => {
@@ -26,7 +57,8 @@ const AcceptOrDeclineTaskController = [
       const action = req.body.action,
         taskId = mongoose.Types.ObjectId(req.body.id),
         userId = mongoose.Types.ObjectId(req.user._id),
-        name = `${req.user.first_name} ${req.user.last_name}`;
+        name = `${req.user.first_name} ${req.user.last_name}`,
+        notificationId = mongoose.Types.ObjectId(req.body.notificationId);
       var update = {},
         notification = {};
       if (action == TASK_ACTION_TYPE.accept) {
@@ -74,13 +106,40 @@ const AcceptOrDeclineTaskController = [
       if (notification.title == NOTIFICATION_TITLE.taskAccepted) {
         notification.body = `${name} has accepted ${task.name} task assinged by you`;
         notification.type = NOTIFICATION_TYPE.taskAccepted;
+        await NotificationModel.findOneAndUpdate(
+          {
+            task: task._id,
+            sentTo: { $ne: task.assignor.id },
+            type: NOTIFICATION_TYPE.taskAccepted,
+          },
+          {
+            $push: { sentTo: userId },
+          }
+        );
       } else {
         notification.body = `${name} has declined ${task.name} task assinged by you`;
         notification.type = NOTIFICATION_TYPE.taskDeclined;
+        await NotificationModel.findOneAndUpdate(
+          {
+            task: task._id,
+            sentTo: { $ne: task.assignor.id },
+            type: NOTIFICATION_TYPE.taskDeclined,
+          },
+          {
+            $push: { sentTo: userId },
+          }
+        );
       }
 
       // await SendNotifcationService(notification, [task.assignor.id]);
-
+      await NotificationModel.findOneAndUpdate(
+        {
+          _id: notificationId,
+        },
+        {
+          $pull: { sentTo: userId },
+        }
+      );
       await NotificationModel.create({
         title: notification.title,
         body: notification.body,
