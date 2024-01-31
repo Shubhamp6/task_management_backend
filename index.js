@@ -13,6 +13,7 @@ const task = require("./src/routes/task.routes");
 const project = require("./src/routes/project.routes");
 const notification = require("./src/routes/notification.routes");
 const whiteboard = require("./src/routes/whiteboard.routes");
+const FetchProjectsWithTasksController = require("./src/contoller/ProjectController/FetchProjectsWithTasks.controller");
 mongoose.set("strictQuery", false);
 dotenv.config();
 
@@ -61,3 +62,8 @@ app.use("/task-management/v1/api/task", tokenVerifier, task);
 app.use("/task-management/v1/api/project", tokenVerifier, project);
 app.use("/task-management/v1/api/notification", tokenVerifier, notification);
 app.use("/task-management/v1/api/whiteboard", tokenVerifier, whiteboard);
+app.get(
+  "/task-management/v1/api/calendar",
+  tokenVerifier,
+  FetchProjectsWithTasksController
+);

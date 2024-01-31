@@ -246,7 +246,7 @@ const CreateTaskController = [
         title: NOTIFICATION_TITLE.taskAccepted,
         body: `You are added to ${name} task as reporter by ${assignor.first_name} ${assignor.last_name}`,
         task: task._id,
-        type: NOTIFICATION_TYPE.taskAssignedPrimary,
+        type: NOTIFICATION_TYPE.taskAccepted,
         sentTo: [reporter.id],
       });
 

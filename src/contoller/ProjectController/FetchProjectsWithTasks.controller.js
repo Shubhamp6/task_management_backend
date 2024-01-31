@@ -13,9 +13,8 @@ const FetchProjectsWithTasksController = [
         query = [],
         afterQuery = [];
       const condition = {
-        $or: [{ members: { id: userId } }, { head: { id: userId } }],
+        $or: [{ "members.id": userId }, { "head.id": userId }],
       };
-
       const filterCondition = await new ResponseGenratorService(
         req,
         model
@@ -41,7 +40,7 @@ const FetchProjectsWithTasksController = [
           tasks: 1,
         },
       });
-
+      console.log(query);
       const projects = await new ResponseGenratorService(
         req,
         model
