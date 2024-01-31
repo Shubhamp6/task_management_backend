@@ -131,7 +131,10 @@ const AcceptOrDeclineTaskController = [
         );
       }
 
-      await SendNotifcationService(notification, [task.assignor.id]);
+      await SendNotifcationService(
+        { body: notification.body, title: notification.title },
+        [task.assignor.id]
+      );
       await NotificationModel.findOneAndUpdate(
         {
           _id: notificationId,
