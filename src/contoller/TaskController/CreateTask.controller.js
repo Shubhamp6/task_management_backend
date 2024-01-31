@@ -265,22 +265,22 @@ const CreateTaskController = [
         sentTo: [],
       });
 
-      //Sending notification to all concern persons
-      // await SendNotifcationService(
-      //   {
-      //     title: NOTIFICATION_TITLE.taskAssignedPrimary,
-      //     body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
-      //   },
-      //   sendTo
-      // );
+      // Sending notification to all concern persons
+      await SendNotifcationService(
+        {
+          title: NOTIFICATION_TITLE.taskAssignedPrimary,
+          body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
+        },
+        sendTo
+      );
 
-      // await SendNotifcationService(
-      //   {
-      //     title: NOTIFICATION_TITLE.taskAccepted,
-      //     body: `You are added to ${name} task as reporter by ${assignor.first_name} ${assignor.last_name}`,
-      //   },
-      //   [reporter.id]
-      // );
+      await SendNotifcationService(
+        {
+          title: NOTIFICATION_TITLE.taskAccepted,
+          body: `You are added to ${name} task as reporter by ${assignor.first_name} ${assignor.last_name}`,
+        },
+        [reporter.id]
+      );
 
       // Scheduling reminders for the task
       const dueDate = new Date(due_date);
