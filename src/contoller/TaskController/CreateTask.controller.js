@@ -14,6 +14,7 @@ const TaskModel = require("../../model/Task.model");
 const NotificationModel = require("../../model/Notification.model");
 const SendNotifcationService = require("../../services/SendNotification.service");
 const ReminderModel = require("../../model/Reminder.model");
+const { compareSync } = require("bcrypt");
 
 const CreateTaskController = [
   UploadFileService.any("attachmentFiles"),
@@ -285,7 +286,7 @@ const CreateTaskController = [
       // Scheduling reminders for the task
       const dueDate = new Date(due_date);
       const dueTime = new Date(due_time);
-      const year = dueDate.getYear(),
+      const year = dueDate.getFullYear(),
         month = dueDate.getMonth(),
         date = dueDate.getDate(),
         hours = dueTime.getHours(),
@@ -293,8 +294,7 @@ const CreateTaskController = [
       const deadline = new Date(year, month, date, hours, minutes),
         currentTime = new Date().getTime();
       const reminders = [];
-
-      if (deadline.getTime() - 2 * 24 * 60 * 60 * 1000 > currentTime)
+      if (currentTime + 2 * 24 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
           scheduled_time: new Date(
@@ -302,25 +302,25 @@ const CreateTaskController = [
           ),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
-      if (deadline.getTime() - 24 * 60 * 60 * 1000 > currentTime)
+      if (currentTime + 24 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
           scheduled_time: new Date(deadline.getTime() - 24 * 60 * 60 * 1000),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
-      if (deadline.getTime() - 15 * 60 * 60 * 1000 > currentTime)
+      if (currentTime + 15 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
           scheduled_time: new Date(deadline.getTime() - 15 * 60 * 60 * 1000),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
-      if (deadline.getTime() - 10 * 60 * 60 * 1000 > currentTime)
+      if (currentTime - 10 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
           scheduled_time: new Date(deadline.getTime() - 10 * 60 * 60 * 1000),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
-      if (deadline.getTime() - 5 * 60 * 60 * 1000 > currentTime)
+      if (currentTime - 5 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
           scheduled_time: new Date(deadline.getTime() - 5 * 60 * 60 * 1000),
