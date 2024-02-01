@@ -22,7 +22,7 @@ const reminderService = cron.schedule("* * * * *", async () => {
     const task = await TaskModel.findById(
       mongoose.Types.ObjectId(notification.task)
     );
-    const sendTo = assignees_working.map((assignee) => {
+    const sendTo = task.assignees_working.map((assignee) => {
         return assignee.id;
     });
 
