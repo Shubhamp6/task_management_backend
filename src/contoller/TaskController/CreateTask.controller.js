@@ -267,21 +267,21 @@ const CreateTaskController = [
       });
 
       // Sending notification to all concern persons
-      await SendNotifcationService(
-        {
-          title: NOTIFICATION_TITLE.taskAssignedPrimary,
-          body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
-        },
-        sendTo
-      );
+      // await SendNotifcationService(
+      //   {
+      //     title: NOTIFICATION_TITLE.taskAssignedPrimary,
+      //     body: `${name} is assinged to you by ${assignor.first_name} ${assignor.last_name}`,
+      //   },
+      //   sendTo
+      // );
 
-      await SendNotifcationService(
-        {
-          title: NOTIFICATION_TITLE.taskAccepted,
-          body: `You are added to ${name} task as reporter by ${assignor.first_name} ${assignor.last_name}`,
-        },
-        [reporter.id]
-      );
+      // await SendNotifcationService(
+      //   {
+      //     title: NOTIFICATION_TITLE.taskAccepted,
+      //     body: `You are added to ${name} task as reporter by ${assignor.first_name} ${assignor.last_name}`,
+      //   },
+      //   [reporter.id]
+      // );
 
       // Scheduling reminders for the task
       const dueDate = new Date(due_date);
@@ -298,32 +298,32 @@ const CreateTaskController = [
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
           scheduled_time: new Date(
-            deadline.getTime() - 2 * 24 * 60 * 60 * 1000
+            deadline.getTime() - (53 * 60 * 60 * 1000 + 30 * 60 * 1000)
           ),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
       if (currentTime + 24 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() - 24 * 60 * 60 * 1000),
+          scheduled_time: new Date(deadline.getTime() -  (29 * 60 * 60 * 1000 + 30 * 60 * 1000)),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
       if (currentTime + 15 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() - 15 * 60 * 60 * 1000),
+          scheduled_time: new Date(deadline.getTime() -  (20 * 60 * 60 * 1000 + 30 * 60 * 1000)),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
       if (currentTime - 10 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() - 10 * 60 * 60 * 1000),
+          scheduled_time: new Date(deadline.getTime() -  (15 * 60 * 60 * 1000 + 30 * 60 * 1000)),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
       if (currentTime - 5 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() - 5 * 60 * 60 * 1000),
+          scheduled_time: new Date(deadline.getTime() -  (10 * 60 * 60 * 1000 + 30 * 60 * 1000)),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
 

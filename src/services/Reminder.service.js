@@ -11,7 +11,8 @@ const { default: mongoose } = require("mongoose");
 
 const reminderService = cron.schedule("* * * * *", async () => {
   // Check for notifications that need to be sent
-  const currentTime = new Date();
+  const currentTime = new Date().toISOString();
+  console.log(currentTime)
   const notificationsToSend = await ReminderModel.find({
     scheduled_time: { $lte: currentTime },
   });
