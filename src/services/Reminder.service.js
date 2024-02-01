@@ -9,13 +9,13 @@ const NotificationModel = require("../model/Notification.model");
 const TaskModel = require("../model/Task.model");
 const { default: mongoose } = require("mongoose");
 
-const reminderService = cron.schedule("0/10* * * * *", async () => {
+const reminderService = cron.schedule("* * * * *", async () => {
   // Check for notifications that need to be sent
   const currentTime = new Date();
   const notificationsToSend = await ReminderModel.find({
     scheduled_time: { $lte: currentTime },
   });
-
+  console.log("cron");
   // Send notifications
   notificationsToSend.forEach(async (notification) => {
     const task = await TaskModel.findById(

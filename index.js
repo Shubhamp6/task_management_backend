@@ -14,6 +14,7 @@ const project = require("./src/routes/project.routes");
 const notification = require("./src/routes/notification.routes");
 const whiteboard = require("./src/routes/whiteboard.routes");
 const FetchProjectsWithTasksController = require("./src/contoller/ProjectController/FetchProjectsWithTasks.controller");
+const reminderService = require("./src/services/Reminder.service");
 mongoose.set("strictQuery", false);
 dotenv.config();
 
@@ -52,6 +53,8 @@ mongoose
     console.log(err);
   });
 
+// schedule envoke
+reminderService;
 app.use(bodyParser.json({ limit: process.env.BODY_PARSER_LIMT }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "150mb" }));
 app.use(middleware);

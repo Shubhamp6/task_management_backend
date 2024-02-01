@@ -14,21 +14,21 @@ admin.initializeApp({
 
 const SendNotifcationService = async (notification, userId) => {
   try {
-    // const users = await UserModel.find({ _id: { $in: userId } });
+    const users = await UserModel.find({ _id: { $in: userId } });
 
-    // users.forEach(async user => {
-    //   const message = {
-    //     token: user.fcm_token,
-    //     notification,
-    //   };
+    users.forEach(async user => {
+      const message = {
+        token: user.fcm_token,
+        notification,
+      };
       
-    //   await admin.messaging().send(message);
-    //   // notification: {
-    //   //   title: "Login Successful",
-    //   //   body: "LFG",
-    //   // },
-    // });
-    // return;
+      await admin.messaging().send(message);
+      // notification: {
+      //   title: "Login Successful",
+      //   body: "LFG",
+      // },
+    });
+    return;
   } catch (error) {
     return apiResponseHelper.errorResponse(res, "Server Error");
     // return apiResponseHelper.errorResponse(res, (msg = "request is not sent!"));
