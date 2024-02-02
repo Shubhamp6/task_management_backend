@@ -10,6 +10,8 @@ const {
   NOTIFICATION_TITLE,
 } = require("../../utils/constants/common.constants");
 const UserModel = require("../../model/User.model");
+const NotificationModel = require("../../model/Notification.model");
+const SendNotifcationService = require("../../services/SendNotification.service");
 
 const AddAssingeesController = [
   body("id")
