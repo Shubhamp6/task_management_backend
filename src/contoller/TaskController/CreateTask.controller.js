@@ -189,7 +189,7 @@ const CreateTaskController = [
         reporter,
         parent_task,
       } = req.body;
-      console.log(req.body.attachmentFiles);
+      console.log(req.files);
       const assignees_with_add_authority = initial_assignees;
 
       // If assignor is not specified make creator of task assignor
@@ -332,6 +332,7 @@ const CreateTaskController = [
 
       return apiResponseHelper.successResponse(res, "task succeffuly created");
     } catch (e) {
+      console.log(e);
       return apiResponseHelper.errorResponse(res, e.message);
     }
   },

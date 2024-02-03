@@ -9,7 +9,7 @@ const NotificationModel = require("../model/Notification.model");
 const TaskModel = require("../model/Task.model");
 const { default: mongoose } = require("mongoose");
 
-const reminderService = cron.schedule("* * * * *", async () => {
+const reminderService = cron.schedule("*/10 * * * * *", async () => {
   // Check for notifications that need to be sent
   const currentTime = new Date().toISOString();
   console.log(currentTime)
