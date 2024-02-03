@@ -82,6 +82,7 @@ const CreateTaskController = [
   check("attachmentFiles")
     .optional()
     .custom((value, { req }) => {
+      console.log("Working in frontend")
       if (req.files.length == 0) {
         return false;
       } else {
@@ -188,7 +189,7 @@ const CreateTaskController = [
         reporter,
         parent_task,
       } = req.body;
-
+      console.log(req.files[0].filename);
       const assignees_with_add_authority = initial_assignees;
 
       // If assignor is not specified make creator of task assignor
