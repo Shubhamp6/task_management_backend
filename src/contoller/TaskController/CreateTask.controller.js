@@ -189,7 +189,7 @@ const CreateTaskController = [
         reporter,
         parent_task,
       } = req.body;
-      console.log(req.files[0].filename);
+      console.log(req.body.attachmentFiles);
       const assignees_with_add_authority = initial_assignees;
 
       // If assignor is not specified make creator of task assignor
