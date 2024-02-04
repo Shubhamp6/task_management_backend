@@ -35,9 +35,11 @@ const FetchProjectsWithTasksController = [
       afterQuery.push({
         $project: {
           name: 1,
-          due_date: 1,
-          head: 1,
-          tasks: 1,
+          _id: 1,
+          "tasks._id": 1,
+          "tasks.name":1,
+          "tasks.start_date":1,
+          "tasks.due_date":1,
         },
       });
       console.log(query);

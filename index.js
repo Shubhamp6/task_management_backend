@@ -56,7 +56,7 @@ mongoose
 // schedule envoke
 reminderService;
 app.use(bodyParser.json({ limit: process.env.BODY_PARSER_LIMT }));
-app.use(bodyParser.urlencoded({ extended: true, limit: "150mb",parameterLimit:50000000000 }));
+app.use(bodyParser.urlencoded({ extended: true, limit: "150mb" }));
 app.use(middleware);
 
 app.use("/task-management/v1/api/auth", auth);

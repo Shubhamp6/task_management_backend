@@ -59,15 +59,10 @@ const FetchTasksController = [
             isAccepted: {
               $cond: {
                 if: {
-                  $or: [
-                    {
-                      $in: [user_id, "$assignees_working.id"],
-                    },
-                    { $eq: ["$reporter.id", user_id] },
-                  ],
+                  $in: [user_id, "$assignees_not_working.id"],
                 },
-                then: true,
-                else: false,
+                then: false,
+                else: true,
               },
             },
           },
