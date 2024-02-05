@@ -68,6 +68,7 @@ const AcceptOrDeclineTaskController = [
               id: userId,
             },
           },
+          $pull: { assignees_with_add_authority: { id: userId } },
           $push: {
             assignees_working: {
               id: userId,
@@ -87,6 +88,7 @@ const AcceptOrDeclineTaskController = [
               id: userId,
             },
           },
+          $pull: { assignees_with_add_authority: { id: userId } },
           $push: {
             assignees_not_working: {
               id: userId,

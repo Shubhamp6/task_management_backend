@@ -176,6 +176,7 @@ const CreateTaskController = [
 
   async (req, res, next) => {
     try {
+      console.log(req.body);
       const {
         name,
         description,
