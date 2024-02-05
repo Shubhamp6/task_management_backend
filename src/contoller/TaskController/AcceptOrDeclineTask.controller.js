@@ -59,7 +59,6 @@ const AcceptOrDeclineTaskController = [
         userId = mongoose.Types.ObjectId(req.user._id),
         name = `${req.user.first_name} ${req.user.last_name}`,
         notificationId = mongoose.Types.ObjectId(req.body.notificationId);
-      console.log("request body :" + req.body.assignor);
       var update = {},
         notification = {};
       if (action == TASK_ACTION_TYPE.accept) {
