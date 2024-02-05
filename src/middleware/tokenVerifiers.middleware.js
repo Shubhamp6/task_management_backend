@@ -7,7 +7,7 @@ const _lang = require('../utils/lang/index.js')
 const tokenVerifier = async (req, res, next) => {
   try {
     const bearer = req.header('Authorization')
-    console.log("request body :" + req.body);
+    console.log("request body :" + req.body.reporter);
     console.log("request files :" + req.files);
     if (!bearer) {
       return apiResponseHelper.forbiddenResponse(
