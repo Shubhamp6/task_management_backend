@@ -5,6 +5,7 @@ const FetchUsersController = require("../contoller/UserController/FetchUsers.con
 const userRoutes = express();
 
 userRoutes.post("/", CreateUesrController);
+userRoutes.get("/fetch-by-id", CreateUesrController);
 userRoutes.get("/", FetchUsersController);
 
 module.exports = userRoutes;

@@ -9,13 +9,6 @@ const UserFetchByTokenController = [
 			delete userData['password']
 			delete userData['access_token']
 			delete userData['refresh_token']
-			if (userData.parent_id && Array.isArray(userData.parent_id) && userData.parent_id[0]) {
-				const requestedParent = await User.findById(userData.parent_id[0])
-				userData['parent_id'] = [{
-					_id: requestedParent._id,
-					name: requestedParent.name
-				}]
-			}
 			return apiResponseHelper.successResponseWithData(res, 'user info fetched', userData)
 		
 		} catch (e) {
