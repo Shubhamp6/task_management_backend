@@ -34,7 +34,7 @@ const UpdateStickyNoteController = [
     .withMessage("sticky_note_color_required")
     .bail()
     .custom((val) => {
-      if (!Object.values(STICKY_NOTES_COLORS).includes(val)) {
+      if (!Object.values(COLORS).includes(val)) {
         throw Error("bad_sticky_note_color_selcetion");
       }
       return true;

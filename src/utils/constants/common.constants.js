@@ -45,7 +45,7 @@ const NOTIFICATION_TITLE = {
   reminder: "Task Deadline Reminder",
 };
 
-const STICKY_NOTES_COLORS = {
+const COLORS = {
   sage: "Color(0xffdcffb7)",
   peach: "Color(0xffffb996)",
   green: "Color(0xfffed9ed)",
@@ -158,7 +158,7 @@ module.exports = {
   TASK_ACTION_TYPE,
   NOTIFICATION_TYPE,
   NOTIFICATION_TITLE,
-  STICKY_NOTES_COLORS,
+  COLORS,
   // USER_DEPARTMENTS,
   // LOG_TYPES,
   // DURATION_TYPES,

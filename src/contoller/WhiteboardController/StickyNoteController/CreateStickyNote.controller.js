@@ -5,7 +5,7 @@ const { body } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../../middleware/PayloadValidator.middleware");
 const WhiteboardModel = require("../../../model/Whiteboard.model");
 const StickyNoteModel = require("../../../model/StickyNote.model");
-const { STICKY_NOTES_COLORS } = require("../../../utils/constants/common.constants");
+const { COLORS } = require("../../../utils/constants/common.constants");
 
 const CreateStickyNoteController = [
   body("description")
@@ -16,7 +16,7 @@ const CreateStickyNoteController = [
     .withMessage("sticky_note_color_required")
     .bail()
     .custom((val) => {
-      if (!Object.values(STICKY_NOTES_COLORS).includes(val)) {
+      if (!Object.values(COLORS).includes(val)) {
         throw Error("bad_sticky_note_color_selcetion");
       }
       return true;
