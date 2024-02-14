@@ -31,13 +31,13 @@ const SendChatNotificationsController = [
     .withMessage("invalid_user_id")
     .trim()
     .escape(),
-  
+
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
       const title = req.body.title,
         body = req.body.body;
-
+      console.log(title, body, req.body.sendTo);
       await SendNotifcationService({ title, body }, req.body.sendTo);
 
       return apiResponseHelper.successResponse(res, "Notification sent");
