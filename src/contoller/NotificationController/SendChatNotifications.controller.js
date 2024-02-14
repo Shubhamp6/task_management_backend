@@ -6,6 +6,7 @@ const NotificationModel = require("../../model/Notification.model");
 const { body, check } = require("express-validator");
 const SendNotifcationService = require("../../services/SendNotification.service");
 const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.middleware");
+const UserModel = require("../../model/User.model");
 
 const SendChatNotificationsController = [
   body("title")
