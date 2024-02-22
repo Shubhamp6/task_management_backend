@@ -6,7 +6,7 @@ const { body } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../../middleware/PayloadValidator.middleware");
 const { COLORS } = require("../../../utils/constants/common.constants");
 
-const CreateMindMapController = [
+const CreateMindMapContrdalksfjoller = [
   body("content")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("mind_map_node_content_required")
@@ -87,4 +87,4 @@ const CreateMindMapController = [
   },
 ];
 
-module.exports = CreateMindMapController;
+module.exports = CreateMindMapContrdalksfjoller;
