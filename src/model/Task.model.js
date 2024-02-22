@@ -47,7 +47,7 @@ const Taskschema = mongoose.Schema(
       type: Date,
       required: true,
     },
-    attachments: [
+    attachmentFiles: [
       {
         type: String,
       },

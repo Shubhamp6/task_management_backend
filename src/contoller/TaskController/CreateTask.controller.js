@@ -17,7 +17,6 @@ const ReminderModel = require("../../model/Reminder.model");
 const { compareSync } = require("bcrypt");
 
 const CreateTaskController = [
-  UploadFileService.any("attachmentFiles"),
   body("name")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("project_name_required")
@@ -82,7 +81,7 @@ const CreateTaskController = [
   check("attachmentFiles")
     .optional()
     .custom((value, { req }) => {
-      console.log("Working in frontend")
+      // console.log("Working in frontend")
       if (req.files.length == 0) {
         return false;
       } else {
@@ -185,12 +184,13 @@ const CreateTaskController = [
         start_date,
         due_date,
         due_time,
+        attachmentFiles,
         assignor,
         initial_assignees,
         reporter,
         parent_task,
       } = req.body;
-      console.log(name, assignor);
+      // console.log(name, assignor);
       const assignees_with_add_authority = initial_assignees;
 
       // If assignor is not specified make creator of task assignor
@@ -201,29 +201,13 @@ const CreateTaskController = [
           last_name: req.user.last_name,
         });
 
-      // Adding attachments if any
-      var attachments;
-      if (req.files) {
-        const attachmentFiles = req.files;
-
-        attachments = attachmentFiles.map((attachment) => {
-          return (
-            req.protocol +
-            "://" +
-            req.get("host") +
-            "/attachments/" +
-            attachment.filename
-          );
-        });
-      }
-
       // Create new task
       const task = await TaskModel.create({
         name,
         description,
         project,
         priority,
-        attachments,
+        attachmentFiles,
         start_date,
         due_date,
         due_time,
@@ -307,25 +291,33 @@ const CreateTaskController = [
       if (currentTime + 24 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() -  (29 * 60 * 60 * 1000 + 30 * 60 * 1000)),
+          scheduled_time: new Date(
+            deadline.getTime() - (29 * 60 * 60 * 1000 + 30 * 60 * 1000)
+          ),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
       if (currentTime + 15 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() -  (20 * 60 * 60 * 1000 + 30 * 60 * 1000)),
+          scheduled_time: new Date(
+            deadline.getTime() - (20 * 60 * 60 * 1000 + 30 * 60 * 1000)
+          ),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
       if (currentTime - 10 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() -  (15 * 60 * 60 * 1000 + 30 * 60 * 1000)),
+          scheduled_time: new Date(
+            deadline.getTime() - (15 * 60 * 60 * 1000 + 30 * 60 * 1000)
+          ),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
       if (currentTime - 5 * 60 * 60 * 1000 < deadline.getTime())
         reminders.push({
           task: mongoose.Types.ObjectId(task._id),
-          scheduled_time: new Date(deadline.getTime() -  (10 * 60 * 60 * 1000 + 30 * 60 * 1000)),
+          scheduled_time: new Date(
+            deadline.getTime() - (10 * 60 * 60 * 1000 + 30 * 60 * 1000)
+          ),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
 
