@@ -82,7 +82,7 @@ const CreateTaskController = [
     .optional()
     .custom((value, { req }) => {
       // console.log("Working in frontend")
-      if (req.files.length == 0) {
+      if (req.value.length == 0) {
         return false;
       } else {
         return true;
