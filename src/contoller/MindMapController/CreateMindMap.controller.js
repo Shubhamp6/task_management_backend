@@ -37,12 +37,12 @@ const CreateMindMapController = [
         last_name: req.user.last_name,
         employee_code: req.user.employee_code,
       };
-      // data["nodes"] = [
-      //   {
-      //     id: 1,
-      //     label: "Write something...",
-      //   },
-      // ];
+      data["nodes"] = [
+        {
+          id: 1,
+          label: "Write something...",
+        },
+      ];
       console.log(data);
       await MindMapModel.create(data);
       return apiResponseHelper.successResponse(res, "new mindmap created");
