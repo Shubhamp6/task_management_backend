@@ -3,7 +3,6 @@ const _lang = require("../../utils/lang");
 const mongoose = require("mongoose");
 const { body } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../middleware/PayloadValidator.middleware");
-const WhiteboardModel = require("../../model/Whiteboard.model");
 const MindMapModel = require("../../model/MindMap.model");
 
 const DeleteMindMapController = [

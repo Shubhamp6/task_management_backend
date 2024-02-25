@@ -5,16 +5,13 @@ const { body, check } = require("express-validator");
 const PayloadValidatorMiddleware = require("../../../middleware/PayloadValidator.middleware");
 const MindMapModel = require("../../../model/MindMap.model");
 
-const CreateMindMapNodeController = [
-  body("label")
-    .notEmpty({ ignore_whitespace: true })
-    .withMessage("mindmap_node_label_required"),
+const UpdateMindMapNodeController = [
   body("id")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("mindmap_node_id_required"),
-  body("parentId")
+  body("label")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("mindmap_node_parent_id_required"),
+    .withMessage("mindmap_node_label_required"),
   body("mindmap")
     .notEmpty({ ignore_whitespace: true })
     .withMessage("mindmap_id_required")
@@ -38,13 +35,12 @@ const CreateMindMapNodeController = [
   async (req, res) => {
     try {
       const data = req.body;
-      await MindMapModel.updateById(mongoose.Types.ObjectId(data.mindmap), {
-        $push: {
-          nodes: { id: data.id, label: data.label, parentId: data.parentId },
-        },
-        $push: { edges: { from: data.parentId, to: data.id } },
-      });
-      return apiResponseHelper.successResponse(res, "new mindmap node created");
+      await MindMapModel.UpdateById(
+        mongoose.Types.ObjectId(data.mindmap),
+        { $set: { "nodes.$[elem].label": data.label } },
+        { arrayFilters: [{ "elem.id": data.id }] }
+      );
+      return apiResponseHelper.successResponse(res, "new mindmap node updated");
     } catch (e) {
       console.log(e);
       return apiResponseHelper.errorResponse(res, _lang("server_error"));
@@ -52,4 +48,4 @@ const CreateMindMapNodeController = [
   },
 ];
 
-module.exports = CreateMindMapNodeController;
+module.exports = UpdateMindMapNodeController;

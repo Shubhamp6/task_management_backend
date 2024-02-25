@@ -66,7 +66,7 @@ app.use("/task-management/v1/api/task", tokenVerifier, task);
 app.use("/task-management/v1/api/project", tokenVerifier, project);
 app.use("/task-management/v1/api/notification", tokenVerifier, notification);
 app.use("/task-management/v1/api/whiteboard", tokenVerifier, whiteboard);
-app.use("/task-management/v1/api/mind-map", tokenVerifier, mindMap);
+app.use("/task-management/v1/api/mindmap", tokenVerifier, mindMap);
 app.get(
   "/task-management/v1/api/calendar",
   tokenVerifier,

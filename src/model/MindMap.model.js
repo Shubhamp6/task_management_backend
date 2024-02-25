@@ -46,6 +46,35 @@ const MindMapschema = mongoose.Schema(
         },
       },
     ],
+    nodes: [
+      {
+        id: {
+          type: Number,
+          required: true,
+        },
+        label: {
+          type: String,
+          required: true,
+        },
+        parentId: {
+          type: Number,
+          required: true,
+          default: -1,
+        },
+      },
+    ],
+    edges: [
+      {
+        from: {
+          type: Number,
+          required: true,
+        },
+        to: {
+          type: Number,
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );
