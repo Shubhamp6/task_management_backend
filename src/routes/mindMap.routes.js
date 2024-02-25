@@ -8,10 +8,10 @@ const CreateMindMapNodeController = require("../contoller/MindMapController/Mind
 const mindMapRoutes = express();
 
 mindMapRoutes.post("/", CreateMindMapController);
-mindMapRoutes.get("/", FetchMindMapListController);
+mindMapRoutes.get("/list", FetchMindMapListController);
 mindMapRoutes.patch("/", UpdateMindMapController);
 mindMapRoutes.delete("/", DeleteMindMapController);
 
-mindMapRoutes.post("/node",CreateMindMapNodeController);
+mindMapRoutes.post("/node", CreateMindMapNodeController);
 
 module.exports = mindMapRoutes;
