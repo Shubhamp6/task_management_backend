@@ -31,13 +31,20 @@ const DeleteMindMapNodeController = [
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
-      const data = req.body;
-      await MindMapModel.updateById(mongoose.Types.ObjectId(data.mindmap), {
-        $pull: { nodes: { id: data.id } },
-        $pull: { nodes: { parentId: data.id } },
-        $pull: { edges: { to: data.id } },
-        $pull: { edges: { from: data.id } },
-      });
+      const data = req.body,
+        userId = mongoose.Types.ObjectId(req.user._id);
+      await MindMapModel.findOneAndUpdate(
+        {
+          _id: mongoose.Types.ObjectId(data.mindmap),
+          $or: [{ "creator.id": userId }, { "shared_with.id": userId }],
+        },
+        {
+          $pull: {
+            nodes: { $or: [{ parentId: data.id }, { id: data.id }] },
+            edges: { $or: [{ to: data.id }, { from: data.id }] },
+          },
+        }
+      );
       return apiResponseHelper.successResponse(res, "new mindmap node deleted");
     } catch (e) {
       console.log(e);

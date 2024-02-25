@@ -37,13 +37,20 @@ const CreateMindMapNodeController = [
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
-      const data = req.body;
-      await MindMapModel.updateById(mongoose.Types.ObjectId(data.mindmap), {
-        $push: {
-          nodes: { id: data.id, label: data.label, parentId: data.parentId },
+      const data = req.body,
+        userId = mongoose.Types.ObjectId(req.user._id);
+      await MindMapModel.findOneAndUpdate(
+        {
+          _id: mongoose.Types.ObjectId(data.mindmap),
+          $or: [{ "creator.id": userId }, { "shared_with.id": userId }],
         },
-        $push: { edges: { from: data.parentId, to: data.id } },
-      });
+        {
+          $push: {
+            nodes: { id: data.id, label: data.label, parentId: data.parentId },
+            edges: { from: data.parentId, to: data.id },
+          },
+        }
+      );
       return apiResponseHelper.successResponse(res, "new mindmap node created");
     } catch (e) {
       console.log(e);

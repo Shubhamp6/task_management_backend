@@ -34,9 +34,13 @@ const UpdateMindMapNodeController = [
   PayloadValidatorMiddleware,
   async (req, res) => {
     try {
-      const data = req.body;
-      await MindMapModel.UpdateById(
-        mongoose.Types.ObjectId(data.mindmap),
+      const data = req.body,
+        userId = mongoose.Types.ObjectId(req.user._id);
+      await MindMapModel.findOneAndUpdate(
+        {
+          _id: mongoose.Types.ObjectId(data.mindmap),
+          $or: [{ "creator.id": userId }, { "shared_with.id": userId }],
+        },
         { $set: { "nodes.$[elem].label": data.label } },
         { arrayFilters: [{ "elem.id": data.id }] }
       );

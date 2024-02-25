@@ -5,6 +5,8 @@ const UpdateMindMapController = require("../contoller/MindMapController/UpdateMi
 const DeleteMindMapController = require("../contoller/MindMapController/DeleteMindMap.controller");
 const CreateMindMapNodeController = require("../contoller/MindMapController/MindMapNodeController/CreateMindMapNode.controller");
 const FetchMindMapController = require("../contoller/MindMapController/FetchMindMap.controller");
+const UpdateMindMapNodeController = require("../contoller/MindMapController/MindMapNodeController/UpdateMindMapNode.controller");
+const DeleteMindMapNodeController = require("../contoller/MindMapController/MindMapNodeController/DeleteMindMapNode.controller");
 
 const mindMapRoutes = express();
 
@@ -15,5 +17,7 @@ mindMapRoutes.patch("/", UpdateMindMapController);
 mindMapRoutes.delete("/", DeleteMindMapController);
 
 mindMapRoutes.post("/node", CreateMindMapNodeController);
+mindMapRoutes.patch("/node", UpdateMindMapNodeController);
+mindMapRoutes.delete("/node", DeleteMindMapNodeController);
 
 module.exports = mindMapRoutes;
