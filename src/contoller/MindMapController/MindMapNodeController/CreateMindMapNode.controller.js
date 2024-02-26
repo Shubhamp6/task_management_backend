@@ -39,6 +39,18 @@ const CreateMindMapNodeController = [
     try {
       const data = req.body,
         userId = mongoose.Types.ObjectId(req.user._id);
+      const parentNode = await MindMapModel.findOne({
+        _id: mongoose.Types.ObjectId(data.mindmap),
+        $or: [{ "creator.id": userId }, { "shared_with.id": userId }],
+      });
+      var parentIds = [];
+      for (let i = 0; i < parentNode.nodes.length; ++i) {
+        if (parentNode.nodes[i].id == data.parentId) {
+          parentIds = parentNode.nodes[i].parentId;
+          break;
+        }
+      }
+      parentIds.push(data.parentId);
       await MindMapModel.findOneAndUpdate(
         {
           _id: mongoose.Types.ObjectId(data.mindmap),
@@ -46,8 +58,16 @@ const CreateMindMapNodeController = [
         },
         {
           $push: {
-            nodes: { id: data.id, label: data.label, parentId: data.parentId },
-            edges: { from: data.parentId, to: data.id },
+            nodes: {
+              id: data.id,
+              label: data.label,
+              parentId: parentIds,
+            },
+            edges: {
+              from: data.parentId,
+              to: data.id,
+              parentId: parentIds,
+            },
           },
         }
       );

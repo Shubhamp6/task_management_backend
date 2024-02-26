@@ -56,11 +56,12 @@ const MindMapschema = mongoose.Schema(
           type: String,
           required: true,
         },
-        parentId: {
-          type: Number,
-          required: true,
-          default: -1,
-        },
+        parentId: [
+          {
+            type: Number,
+            required: true,
+          },
+        ],
       },
     ],
     edges: [
@@ -73,6 +74,12 @@ const MindMapschema = mongoose.Schema(
           type: Number,
           required: true,
         },
+        parentId: [
+          {
+            type: Number,
+            required: true,
+          },
+        ],
       },
     ],
   },

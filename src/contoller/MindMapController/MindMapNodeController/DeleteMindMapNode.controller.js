@@ -41,7 +41,9 @@ const DeleteMindMapNodeController = [
         {
           $pull: {
             nodes: { $or: [{ parentId: data.id }, { id: data.id }] },
-            edges: { $or: [{ to: data.id }, { from: data.id }] },
+            edges: {
+              $or: [{ to: data.id }, { from: data.id }, { parentId: data.id }],
+            },
           },
         }
       );
