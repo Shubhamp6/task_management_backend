@@ -40,11 +40,11 @@ const CreateMindMapController = [
       data["nodes"] = [
         {
           id: 1,
-          label: "Write task",
+          label: data.name,
         },
         {
           id: 2,
-          label: "Write sub-task",
+          label: "",
           parentId: [1],
         },
       ];
