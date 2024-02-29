@@ -44,7 +44,7 @@ const CreateMindMapController = [
         },
         {
           id: 2,
-          label: "...",
+          label: "Write subtask",
           parentId: [1],
         },
       ];
