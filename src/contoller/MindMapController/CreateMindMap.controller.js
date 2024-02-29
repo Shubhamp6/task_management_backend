@@ -44,7 +44,7 @@ const CreateMindMapController = [
         },
         {
           id: 2,
-          label: "",
+          label: "...",
           parentId: [1],
         },
       ];
