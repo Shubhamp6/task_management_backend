@@ -62,10 +62,7 @@ const CreateProjectController = [
     .withMessage("invalid_head_id")
     .trim()
     .escape(),
-
   check("members.*.id")
-    .isArray({ min: 1 })
-    .withMessage("Members required")
     .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({

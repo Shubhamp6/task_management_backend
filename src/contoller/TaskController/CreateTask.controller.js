@@ -113,9 +113,12 @@ const CreateTaskController = [
     .withMessage("invalid_assignor_id")
     .trim()
     .escape(),
-  body("initial_assignees.*.id")
+    
+  body("initial_assignees")
     .isArray({ min: 1 })
-    .withMessage("Assignees required")
+    .withMessage("Assignees required"),
+
+  body("initial_assignees.*.id")
     .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({
