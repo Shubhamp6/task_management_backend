@@ -24,7 +24,6 @@ const CreateTaskController = [
     .escape(),
 
   body("description")
-    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("Task description required")
     .trim()
