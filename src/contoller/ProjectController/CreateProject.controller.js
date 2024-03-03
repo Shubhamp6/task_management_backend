@@ -9,14 +9,14 @@ const ProjectModel = require("../../model/Project.model");
 const CreateProjectController = [
   body("name")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project_name_required")
+    .withMessage("Project name required")
     .trim()
     .escape(),
 
   body("description")
     .optional()
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project_description_required")
+    .withMessage("Project description required")
     .trim()
     .escape(),
 
@@ -36,13 +36,13 @@ const CreateProjectController = [
   body("due_date")
     .optional()
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project due date required!")
+    .withMessage("Project due date required!")
     .trim()
     .escape(),
 
   body("head.id")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project_head_required")
+    .withMessage("Project head required")
     .bail()
     .custom(async (val, { req }) => {
       if (val) {
@@ -64,6 +64,8 @@ const CreateProjectController = [
     .escape(),
 
   check("members.*.id")
+    .isArray({ min: 1 })
+    .withMessage("Members required")
     .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({
