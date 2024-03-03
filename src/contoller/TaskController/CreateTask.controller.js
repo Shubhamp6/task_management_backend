@@ -19,21 +19,21 @@ const { compareSync } = require("bcrypt");
 const CreateTaskController = [
   body("name")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project_name_required")
+    .withMessage("Task name required")
     .trim()
     .escape(),
 
   body("description")
     .optional()
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project_description_required")
+    .withMessage("Task description required")
     .trim()
     .escape(),
 
   body("project")
     .optional()
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("project_id_required")
+    .withMessage("Project name required")
     .bail()
     .custom(async (val) => {
       if (val) {
@@ -51,7 +51,7 @@ const CreateTaskController = [
 
   body("priority")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("task priority is required!")
+    .withMessage("Task priority is required!")
     .bail()
     .custom((val) => {
       if (!Object.values(PRIORITIES).includes(val)) {
@@ -64,17 +64,17 @@ const CreateTaskController = [
 
   body("start_date")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("task start date required!")
+    .withMessage("Task start date required!")
     .trim()
     .escape(),
   body("due_date")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("task due date required!")
+    .withMessage("Task due date required!")
     .trim()
     .escape(),
   body("due_time")
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("task due time required!")
+    .withMessage("Task due time required!")
     .trim()
     .escape(),
 
@@ -93,7 +93,7 @@ const CreateTaskController = [
   body("assignor.id")
     .optional()
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("assignor_id_required")
+    .withMessage("Assignor Required")
     .bail()
     .custom(async (val, { req }) => {
       if (val) {
@@ -106,7 +106,7 @@ const CreateTaskController = [
           user.first_name != req.body.assignor.first_name ||
           user.last_name != req.body.assignor.last_name
         ) {
-          throw Error("assignor not valid");
+          throw Error("Assignor not valid");
         }
       }
       return val;
@@ -115,6 +115,8 @@ const CreateTaskController = [
     .trim()
     .escape(),
   body("initial_assignees.*.id")
+    .isArray({ min: 1 })
+    .withMessage("Assignees required")
     .custom(async (val, { req }) => {
       if (val) {
         const user = await UserModel.findOne({
@@ -143,7 +145,7 @@ const CreateTaskController = [
           user.first_name != req.body.reporter.first_name ||
           user.last_name != req.body.reporter.last_name
         ) {
-          throw Error("reporter not valid");
+          throw Error("Reporter not valid");
         }
       }
       return val;
@@ -155,7 +157,7 @@ const CreateTaskController = [
   body("parent_task")
     .optional()
     .notEmpty({ ignore_whitespace: true })
-    .withMessage("parent_task_id_required")
+    .withMessage("Parent task required")
     .bail()
     .custom(async (val) => {
       if (val) {
@@ -163,7 +165,7 @@ const CreateTaskController = [
           _id: mongoose.Types.ObjectId(val),
         });
         if (!project) {
-          throw Error("project not valid");
+          throw Error("task not valid");
         }
       }
       return val;
