@@ -7,8 +7,6 @@ const UserFetchByTokenController = [
 		try {
 			const userData = { ...req.user }
 			delete userData['password']
-			delete userData['access_token']
-			delete userData['refresh_token']
 			return apiResponseHelper.successResponseWithData(res, 'user info fetched', userData)
 		
 		} catch (e) {
