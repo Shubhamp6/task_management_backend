@@ -55,7 +55,7 @@ const UpdateMindMapController = [
       var shared_with = [];
       if (data.shared_with) shared_with = data.shared_with;
       const updatedData = {
-        $push: { shared_with: { $each: shared_with } },
+        shared_with: shared_with,
       };
       if (data.name) updatedData["name"] = data.name;
       console.log(updatedData);

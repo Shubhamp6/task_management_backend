@@ -54,7 +54,7 @@ const UpdateWhiteboardController = [
       var shared_with = [];
       if (data.shared_with) shared_with = data.shared_with;
       const updatedData = {
-        $push: { shared_with: { $each: shared_with } },
+        shared_with: shared_with,
       };
       if (data.name) updatedData["name"] = data.name;
       console.log(updatedData);
@@ -64,10 +64,7 @@ const UpdateWhiteboardController = [
         },
         updatedData
       );
-      return apiResponseHelper.successResponse(
-        res,
-        "Whitebaord updated"
-      );
+      return apiResponseHelper.successResponse(res, "Whitebaord updated");
     } catch (e) {
       console.log(e);
       return apiResponseHelper.errorResponse(res, _lang("server_error"));
