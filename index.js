@@ -16,6 +16,7 @@ const whiteboard = require("./src/routes/whiteboard.routes");
 const FetchProjectsWithTasksController = require("./src/contoller/ProjectController/FetchProjectsWithTasks.controller");
 const reminderService = require("./src/services/Reminder.service");
 const mindMap = require("./src/routes/mindMap.routes");
+const calendar = require("./src/routes/calendar.routes");
 mongoose.set("strictQuery", false);
 dotenv.config();
 
@@ -67,8 +68,4 @@ app.use("/task-management/v1/api/project", tokenVerifier, project);
 app.use("/task-management/v1/api/notification", tokenVerifier, notification);
 app.use("/task-management/v1/api/whiteboard", tokenVerifier, whiteboard);
 app.use("/task-management/v1/api/mindmap", tokenVerifier, mindMap);
-app.get(
-  "/task-management/v1/api/calendar",
-  tokenVerifier,
-  FetchProjectsWithTasksController
-);
+app.use("/task-management/v1/api/calendar", tokenVerifier, calendar);
