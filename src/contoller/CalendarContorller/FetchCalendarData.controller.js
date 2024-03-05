@@ -38,8 +38,8 @@ const FetchCalendarDataController = [
               if: {
                 $eq: ["$assignor.id", user_id],
               },
-              then: COLORS.blue,
-              else: COLORS.green,
+              then: "Colors.blue",
+              else: "Colors.green",
             },
           },
         },
