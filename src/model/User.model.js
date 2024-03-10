@@ -26,38 +26,38 @@ const Userschema = mongoose.Schema(
       type: String,
       required: true,
     },
-    department: {
-      type: String,
-      required: true,
-    },
-    designation: {
-      type: String,
-      required: true,
-    },
+    // department: {
+    //   type: String,
+    //   required: true,
+    // },
+    // designation: {
+    //   type: String,
+    //   required: true,
+    // },
 
-    birth_date: {
-      type: Date,
-      required: true,
-    },
-    anniversary_date: {
-      type: Date,
-    },
-    company: {
-      type: String,
-      required: true,
-    },
-    phone: {
-      type: Number,
-      required: true,
-    },
-    office_address: {
-      type: String,
-      required: true,
-    },
-    aadhar_no: {
-      type: Number,
-      required: true,
-    },
+    // birth_date: {
+    //   type: Date,
+    //   required: true,
+    // },
+    // anniversary_date: {
+    //   type: Date,
+    // },
+    // company: {
+    //   type: String,
+    //   required: true,
+    // },
+    // phone: {
+    //   type: Number,
+    //   required: true,
+    // },
+    // office_address: {
+    //   type: String,
+    //   required: true,
+    // },
+    // aadhar_no: {
+    //   type: Number,
+    //   required: true,
+    // },
     fcm_token: {
       type: String,
     },
