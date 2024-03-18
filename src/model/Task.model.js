@@ -179,6 +179,10 @@ const Taskschema = mongoose.Schema(
       ref: "tasks",
       default: null,
     },
+    srNo: {
+      type: Number,
+      required: true,
+    },
     status_update_history: [
       {
         description: {

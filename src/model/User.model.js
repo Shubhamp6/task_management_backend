@@ -26,6 +26,11 @@ const Userschema = mongoose.Schema(
       type: String,
       required: true,
     },
+    totalTasks: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     // department: {
     //   type: String,
     //   required: true,
@@ -57,7 +62,7 @@ const Userschema = mongoose.Schema(
     // aadhar_no: {
     //   type: Number,
     //   required: true,
-    // },
+    // },jwt
     fcm_token: {
       type: String,
     },

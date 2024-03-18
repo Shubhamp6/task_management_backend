@@ -113,7 +113,7 @@ const CreateTaskController = [
     .withMessage("invalid_assignor_id")
     .trim()
     .escape(),
-    
+
   body("initial_assignees")
     .isArray({ min: 1 })
     .withMessage("Assignees required"),
@@ -194,6 +194,13 @@ const CreateTaskController = [
         reporter,
         parent_task,
       } = req.body;
+      const srNo = req.user.totalTask + 1;
+      await UserModel.findOneAndUpdate(
+        {
+          _id: req.user._id,
+        },
+        { totalTask: req.user.totalTask + 1 }
+      );
       // console.log(name, assignor);
       const assignees_with_add_authority = initial_assignees;
 
@@ -220,6 +227,7 @@ const CreateTaskController = [
         assignees_with_add_authority,
         reporter,
         parent_task,
+        srNo,
       });
 
       const sendTo = initial_assignees.map((assignee) => {
