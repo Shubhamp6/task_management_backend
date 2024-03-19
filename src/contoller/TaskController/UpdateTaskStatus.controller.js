@@ -38,7 +38,7 @@ const UpdateTaskStatusController = [
         !Object.values(TASK_STATUS_TYPE).includes(val) ||
         val === TASK_STATUS_TYPE.completed
       ) {
-        throw Error("bad_status_type_selcetion");
+        throw Error("bad_status_type_selection");
       }
       return true;
     })
@@ -62,11 +62,10 @@ const UpdateTaskStatusController = [
       const taskDet = await TaskModel.findById(
         mongoose.Types.ObjectId(updatedData.id)
       );
-      const status = {};
       if (updatedData.status.compeletion_percentage) {
         if (
-          taskDet.status.compeletion_percentage +
-            updatedData.status.compeletion_percentage >
+          Number(taskDet.status.compeletion_percentage) +
+            Number(updatedData.status.compeletion_percentage) >
           100
         )
           return apiResponseHelper.validationErrorWithData(
