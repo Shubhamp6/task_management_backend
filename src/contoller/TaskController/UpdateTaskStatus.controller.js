@@ -64,6 +64,16 @@ const UpdateTaskStatusController = [
       );
       const status = {};
       if (updatedData.status.compeletion_percentage) {
+        if (
+          taskDet.status.compeletion_percentage +
+            updatedData.status.compeletion_percentage >
+          100
+        )
+          return apiResponseHelper.validationErrorWithData(
+            res,
+            "invalid percentage added",
+            updatedData
+          );
         taskDet.status.compeletion_percentage =
           taskDet.status.compeletion_percentage +
           updatedData.status.compeletion_percentage;
