@@ -31,11 +31,13 @@ const UpdateTaskStatusController = [
     .trim()
     .escape(),
   body("status.type")
-    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("status_type_required")
     .custom((val) => {
-      if (!Object.values(TASK_STATUS_TYPE).includes(val)) {
+      if (
+        !Object.values(TASK_STATUS_TYPE).includes(val) ||
+        val === TASK_STATUS_TYPE.completed
+      ) {
         throw Error("bad_status_type_selcetion");
       }
       return true;
@@ -49,7 +51,6 @@ const UpdateTaskStatusController = [
     .trim()
     .escape(),
   body("description")
-    .optional()
     .notEmpty({ ignore_whitespace: true })
     .withMessage("description_required")
     .trim()
@@ -58,15 +59,30 @@ const UpdateTaskStatusController = [
   async (req, res) => {
     try {
       const updatedData = req.body;
+      const taskDet = await TaskModel.findById(
+        mongoose.Types.ObjectId(updatedData.id)
+      );
       const status = {};
-      if (updatedData.status) {
-        status["status.compeletion_percentage"] =
+      if (updatedData.status.compeletion_percentage) {
+        taskDet.status.compeletion_percentage =
+          taskDet.status.compeletion_percentage +
           updatedData.status.compeletion_percentage;
-        status["status.type"] = updatedData.status.type;
-        if (!updatedData.description)
-          updatedData.description = `${req.user.first_name} ${req.user.last_name} changed task status`;
+        if (taskDet.status.compeletion_percentage === 100) {
+          taskDet.status.type = TASK_STATUS_TYPE.completed;
+        }
+      } else if (
+        updatedData.status.type === TASK_STATUS_TYPE.onHold ||
+        updatedData.status.type === TASK_STATUS_TYPE.rejected
+      ) {
+        taskDet.status.type = updatedData.status.type;
       }
-      console.log(status);
+      // if (updatedData.status) {
+      //   status["status.compeletion_percentage"] =
+      //     updatedData.status.compeletion_percentage;
+      //   status["status.type"] = updatedData.status.type;
+      //   if (!updatedData.description)
+      //     updatedData.description = `${req.user.first_name} ${req.user.last_name} changed task status`;
+      // }
       const task = await TaskModel.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(updatedData.id) },
         {
@@ -74,14 +90,19 @@ const UpdateTaskStatusController = [
             status_update_history: {
               description: updatedData.description,
               time: new Date(),
+              changeDoneBy: `${req.user.first_name} ${req.user.last_name} (${req.user.employee_code})`,
             },
           },
-          $set: status,
+          $set: taskDet.status,
         },
         { new: true }
       );
       console.log(task);
-      if (updatedData.status && updatedData.status.type) {
+      if (
+        taskDet.status.type === TASK_STATUS_TYPE.completed ||
+        taskDet.status.type === TASK_STATUS_TYPE.onHold ||
+        taskDet.status.type === TASK_STATUS_TYPE.rejected
+      ) {
         const sendTo = task.assignees_working.map((assignee) => {
           return assignee.id;
         });

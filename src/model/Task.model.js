@@ -193,6 +193,10 @@ const Taskschema = mongoose.Schema(
           type: Date,
           required: true,
         },
+        changeDoneBy: {
+          type: String,
+          required: true,
+        },
       },
     ],
   },
