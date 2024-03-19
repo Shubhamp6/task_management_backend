@@ -93,6 +93,7 @@ const UpdateTaskStatusController = [
       //   if (!updatedData.description)
       //     updatedData.description = `${req.user.first_name} ${req.user.last_name} changed task status`;
       // }
+      console.log(taskDet.status);
       const task = await TaskModel.findOneAndUpdate(
         { _id: mongoose.Types.ObjectId(updatedData.id) },
         {
@@ -103,7 +104,7 @@ const UpdateTaskStatusController = [
               changeDoneBy: `${req.user.first_name} ${req.user.last_name} (${req.user.employee_code})`,
             },
           },
-          $set: taskDet.status,
+          status: taskDet.status,
         },
         { new: true }
       );
