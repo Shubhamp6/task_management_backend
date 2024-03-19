@@ -89,30 +89,30 @@ const CreateTaskController = [
     })
     .withMessage("Attachments required"),
 
-  body("assignor.id")
-    .optional()
-    .notEmpty({ ignore_whitespace: true })
-    .withMessage("Assignor Required")
-    .bail()
-    .custom(async (val, { req }) => {
-      if (val) {
-        const user = await UserModel.findOne({
-          _id: mongoose.Types.ObjectId(val),
-        });
-        console.log(req.body);
-        if (
-          !user ||
-          user.first_name != req.body.assignor.first_name ||
-          user.last_name != req.body.assignor.last_name
-        ) {
-          throw Error("Assignor not valid");
-        }
-      }
-      return val;
-    })
-    .withMessage("invalid_assignor_id")
-    .trim()
-    .escape(),
+  // body("assignor.id")
+  //   .optional()
+  //   .notEmpty({ ignore_whitespace: true })
+  //   .withMessage("Assignor Required")
+  //   .bail()
+  //   .custom(async (val, { req }) => {
+  //     if (val) {
+  //       const user = await UserModel.findOne({
+  //         _id: mongoose.Types.ObjectId(val),
+  //       });
+  //       console.log(req.body);
+  //       if (
+  //        !user
+  //         user.first_name != req.body.assignor.first_name ||
+  //         user.last_name != req.body.assignor.last_name
+  //       ) {
+  //         throw Error("Assignor not valid");
+  //       }
+  //     }
+  //     return val;
+  //   })
+  //   .withMessage("invalid_assignor_id")
+  //   .trim()
+  //   .escape(),
 
   body("initial_assignees")
     .isArray({ min: 1 })
