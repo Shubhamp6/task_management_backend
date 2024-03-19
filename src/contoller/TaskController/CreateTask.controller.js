@@ -206,11 +206,11 @@ const CreateTaskController = [
 
       // If assignor is not specified make creator of task assignor
       if (!assignor)
-        assignor = mongoose.Types.ObjectId({
+        assignor = {
           id: mongoose.Types.ObjectId(req.user._id),
           first_name: req.user.first_name,
           last_name: req.user.last_name,
-        });
+        };
 
       // Create new task
       const task = await TaskModel.create({
