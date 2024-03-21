@@ -193,7 +193,7 @@ const CreateTaskController = [
         reporter,
         parent_task,
       } = req.body;
-      const srNo = req.user.totalTask + 1;
+      const srNo = req.user.totalTask || 0 + 1;
       await UserModel.findOneAndUpdate(
         {
           _id: req.user._id,
