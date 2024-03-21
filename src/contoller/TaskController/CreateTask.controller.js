@@ -208,6 +208,7 @@ const CreateTaskController = [
         id: mongoose.Types.ObjectId(req.user._id),
         first_name: req.user.first_name,
         last_name: req.user.last_name,
+        employee_code: req.user.employee_code,
       };
 
       // Create new task
