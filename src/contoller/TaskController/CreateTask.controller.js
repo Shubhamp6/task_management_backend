@@ -204,11 +204,11 @@ const CreateTaskController = [
       const assignees_with_add_authority = initial_assignees;
 
       // Make creator of task assignor
-      const  assignor = {
-          id: mongoose.Types.ObjectId(req.user._id),
-          first_name: req.user.first_name,
-          last_name: req.user.last_name,
-        };
+      const assignor = {
+        id: mongoose.Types.ObjectId(req.user._id),
+        first_name: req.user.first_name,
+        last_name: req.user.last_name,
+      };
 
       // Create new task
       const task = await TaskModel.create({
@@ -330,7 +330,7 @@ const CreateTaskController = [
           ),
           body: `Task - ${name} has dealine on ${deadline.toDateString()}`,
         });
-
+      console.log("task create");
       await ReminderModel.insertMany(reminders);
 
       return apiResponseHelper.successResponse(res, "task succeffuly created");
