@@ -189,7 +189,6 @@ const CreateTaskController = [
         due_date,
         due_time,
         attachmentFiles,
-        assignor,
         initial_assignees,
         reporter,
         parent_task,
@@ -204,9 +203,8 @@ const CreateTaskController = [
       // console.log(name, assignor);
       const assignees_with_add_authority = initial_assignees;
 
-      // If assignor is not specified make creator of task assignor
-      if (!assignor)
-        assignor = {
+      // Make creator of task assignor
+      const  assignor = {
           id: mongoose.Types.ObjectId(req.user._id),
           first_name: req.user.first_name,
           last_name: req.user.last_name,
