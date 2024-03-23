@@ -75,7 +75,7 @@ const UpdateTaskStatusController = [
           );
         taskDet.status.compeletion_percentage =
           Number(taskDet.status.compeletion_percentage) +
-            Number(updatedData.status.compeletion_percentage)
+          Number(updatedData.status.compeletion_percentage);
         if (taskDet.status.compeletion_percentage === 100) {
           taskDet.status.type = TASK_STATUS_TYPE.completed;
         }
@@ -99,7 +99,7 @@ const UpdateTaskStatusController = [
           $push: {
             status_update_history: {
               description: updatedData.description,
-              time: new Date(),
+              time: new Date(new Date().getTime() + 5 * 60 * 60 * 1000),
               changeDoneBy: `${req.user.first_name} ${req.user.last_name} (${req.user.employee_code})`,
             },
           },
