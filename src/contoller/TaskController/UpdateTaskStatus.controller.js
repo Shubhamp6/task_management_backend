@@ -99,7 +99,7 @@ const UpdateTaskStatusController = [
           $push: {
             status_update_history: {
               description: updatedData.description,
-              time: new Date(new Date().getTime() + 5 * 60 * 60 * 1000),
+              time: new Date(new Date().getTime() + 5 * 60 * 60 * 1000 +  30 * 60 * 1000),
               changeDoneBy: `${req.user.first_name} ${req.user.last_name} (${req.user.employee_code})`,
             },
           },
