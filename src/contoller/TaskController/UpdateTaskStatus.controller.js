@@ -74,8 +74,8 @@ const UpdateTaskStatusController = [
             updatedData
           );
         taskDet.status.compeletion_percentage =
-          taskDet.status.compeletion_percentage +
-          updatedData.status.compeletion_percentage;
+          Number(taskDet.status.compeletion_percentage) +
+            Number(updatedData.status.compeletion_percentage)
         if (taskDet.status.compeletion_percentage === 100) {
           taskDet.status.type = TASK_STATUS_TYPE.completed;
         }
