@@ -40,7 +40,6 @@ const FetchTasksController = [
       } else {
         condition = { "assignor.id": user_id };
       }
-      console.log(condition);
       const filterCondition = await new ResponseGenratorService(
         req,
         model
@@ -67,12 +66,11 @@ const FetchTasksController = [
             },
           },
         });
-      console.log(afterQuery);
       const tasks = await new ResponseGenratorService(
         req,
         model
       ).getAggrigatedPaginatedResponse(query, afterQuery);
-
+      console.log(tasks);
       return apiResponseHelper.successResponseWithData(
         res,
         "tasks list fetched",
