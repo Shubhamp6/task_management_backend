@@ -62,7 +62,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "150mb" }));
 app.use(middleware);
 
 app.use("/task-management/v1/api/auth", auth);
-app.use("/task-management/v1/api/user", tokenVerifier, users);
+app.use("/task-management/v1/api/user", users);
 app.use("/task-management/v1/api/task", tokenVerifier, task);
 app.use("/task-management/v1/api/project", tokenVerifier, project);
 app.use("/task-management/v1/api/notification", tokenVerifier, notification);
